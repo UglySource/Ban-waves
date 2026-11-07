@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roblox Ban Wave - Live Exploit Status</title>
+<meta name="description" content="Real-time Roblox executor ban wave tracker. Community-verified reports from r/robloxhackers. Know before you exploit.">
+<meta property="og:title" content="Roblox Ban Wave - Live Status">
+<meta property="og:description" content="Is there an active Roblox executor ban wave right now?">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate" type="application/rss+xml" title="Roblox Ban Wave Monitor" href="/api/rss">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#0b1c36;--bg2:#071526;
+  --surface:rgba(78,140,200,.12);--surface-h:rgba(78,140,200,.2);
+  --border:rgba(78,140,200,.22);--border-h:rgba(78,140,200,.4);
+  --text:#f0ece6;--text2:#9ebdd6;--text3:#5e88aa;
+  --accent:#4e8cc8;--accent-dim:rgba(78,140,200,.12);
+  --accent-glow:rgba(78,140,200,.25);--accent-border:rgba(78,140,200,.4);
+  --green:#4aab8a;--red:#f0ece6;--amber:#c4913a;
+  --sans:'Inter',system-ui,sans-serif;
+  --display:'Syne',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --r:14px;--t:.2s cubic-bezier(.4,0,.2,1);
+}
+body.active  {--accent:#f0ece6;--accent-dim:rgba(240,236,230,.1);--accent-glow:rgba(240,236,230,.22);--accent-border:rgba(240,236,230,.4);--surface:rgba(240,236,230,.07);--surface-h:rgba(240,236,230,.13);--border:rgba(240,236,230,.18);--border-h:rgba(240,236,230,.3);}
+body.warning {--accent:#c4913a;--accent-dim:rgba(196,145,58,.08);--accent-glow:rgba(196,145,58,.22);--accent-border:rgba(196,145,58,.38);--surface:rgba(196,145,58,.06);--surface-h:rgba(196,145,58,.11);--border:rgba(196,145,58,.17);--border-h:rgba(196,145,58,.3);}
+body.clear   {--accent:#4aab8a;--accent-dim:rgba(74,171,138,.08);--accent-glow:rgba(74,171,138,.2);--accent-border:rgba(74,171,138,.35);--surface:rgba(74,171,138,.07);--surface-h:rgba(74,171,138,.13);--border:rgba(74,171,138,.18);--border-h:rgba(74,171,138,.3);}
+
+body{background-color:#0b1c36;background-image:radial-gradient(circle,rgba(78,140,200,.04) 1px,transparent 1px),linear-gradient(180deg,#0d2040 0%,#0b1c36 55%,#091830 100%);background-size:28px 28px,100% 100%;color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 100% 35% at 50% -5%,rgba(11,44,120,.15) 0%,transparent 60%);pointer-events:none;z-index:0;transition:background 1.4s}
+body.active::before{background:radial-gradient(ellipse 100% 35% at 50% -5%,rgba(240,236,230,.06) 0%,transparent 60%)}
+body.warning::before{background:radial-gradient(ellipse 100% 35% at 50% -5%,rgba(150,100,20,.11) 0%,transparent 60%)}
+body.active::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent 0,transparent 3px,rgba(240,236,230,.01) 3px,rgba(240,236,230,.01) 4px);pointer-events:none;z-index:90;animation:scanlines 7s linear infinite}
+@keyframes scanlines{0%{background-position:0 0}100%{background-position:0 80px}}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+header,section,.sep,.feed,.graph-wrap,.section-wrap,.wh-wrap,footer{position:relative;z-index:1}
+
+/* Header */
+header{position:sticky;top:0;z-index:100;height:56px;display:flex;align-items:center;gap:10px;padding:0 28px;background:rgba(7,21,38,.94);backdrop-filter:blur(24px) saturate(1.8);border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:9px;font-family:var(--display);font-size:15px;font-weight:800;letter-spacing:-.3px;color:var(--text);text-decoration:none}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent-glow);flex-shrink:0;transition:background var(--t),box-shadow var(--t)}
+body.active .logo-dot,body.warning .logo-dot{animation:dot-pulse 1s ease-in-out infinite}
+@keyframes dot-pulse{0%,100%{opacity:1;box-shadow:0 0 10px var(--accent-glow)}50%{opacity:.4;box-shadow:0 0 3px var(--accent-glow)}}
+.header-badge{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:100px;background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent);transition:all var(--t)}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.last-check{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.countdown{font-family:var(--mono);font-size:10px;color:var(--text3);display:flex;align-items:center;gap:5px}
+.countdown-ring{width:14px;height:14px;flex-shrink:0}
+.countdown-ring circle{fill:none;stroke:var(--border);stroke-width:2}
+.countdown-ring .prog{stroke:var(--accent);stroke-width:2;stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 1s linear,stroke var(--t)}
+.hdr-icon-btn{background:none;border:none;padding:6px;cursor:pointer;color:var(--text3);display:flex;align-items:center;transition:color var(--t);border-radius:6px}
+.hdr-icon-btn:hover{color:var(--text2);background:var(--surface-h)}
+.hdr-icon-btn svg{width:15px;height:15px}
+.refresh-btn{background:var(--surface);border:1px solid var(--border);color:var(--text2);padding:5px 13px;border-radius:8px;font-family:var(--mono);font-size:11px;cursor:pointer;transition:all var(--t);display:flex;align-items:center;gap:6px}
+.refresh-btn:hover{background:var(--surface-h);border-color:var(--border-h);color:var(--text)}
+.refresh-btn:disabled{opacity:.4;cursor:not-allowed}
+.refresh-btn svg{width:13px;height:13px}
+/* lang dropdown */
+.lang-wrap{position:relative}
+.lang-menu{position:absolute;top:calc(100% + 6px);right:0;background:#081828;border:1px solid var(--border-h);border-radius:10px;padding:6px;min-width:170px;z-index:200;display:none;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.lang-menu.open{display:block}
+.lang-btn{display:block;width:100%;background:none;border:none;color:var(--text2);font-family:var(--mono);font-size:11px;padding:6px 10px;text-align:left;cursor:pointer;border-radius:6px;transition:background var(--t),color var(--t)}
+.lang-btn:hover{background:var(--surface-h);color:var(--text)}
+
+/* Hero */
+.hero{position:relative;min-height:68vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:72px 24px 150px;overflow:hidden}
+.hero-inner{position:relative;z-index:2;max-width:700px;width:100%;text-align:center;animation:fadeUp .5s cubic-bezier(.4,0,.2,1) both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* 2D pastel wave — hero bottom */
+.jwave-wrap{position:absolute;bottom:0;left:0;right:0;height:150px;pointer-events:none;z-index:1;overflow:hidden}
+.jwave-wrap svg{position:absolute;bottom:0;left:0;width:100%;height:100%}
+.jw-g-back{animation:jw-b 16s ease-in-out infinite alternate}
+.jw-g-front{animation:jw-f 10s ease-in-out infinite alternate}
+.jw-line{fill:none;stroke:rgba(200,224,252,.55);stroke-width:1.5;stroke-linecap:round}
+@keyframes jw-b{from{transform:translateX(0)}to{transform:translateX(-36px)}}
+@keyframes jw-f{from{transform:translateX(0)}to{transform:translateX(28px)}}
+
+
+/* Per-state headline color — no glow */
+body.active  .status-headline{color:#f0ece6}
+body.warning .status-headline{color:#c4913a}
+body.clear   .status-headline{color:#4aab8a}
+/* Status-aware live pill */
+body.active  .live-pill{border-color:rgba(240,236,230,.4);background:rgba(240,236,230,.08);color:#f0ece6}
+body.warning .live-pill{border-color:rgba(196,145,58,.42);background:rgba(196,145,58,.08);color:#c4913a}
+body.clear   .live-pill{border-color:rgba(74,171,138,.42);background:rgba(74,171,138,.08);color:#4aab8a}
+/* Card elevation */
+.info-card,.graph-card,.wh-card,.report-card{box-shadow:0 1px 4px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.03);transition:transform var(--t),box-shadow var(--t),border-color var(--t)}
+.post-card{box-shadow:0 1px 3px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.025);transition:background var(--t),border-color var(--t),transform var(--t),box-shadow var(--t)}
+.info-card:hover,.resource-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.5),0 0 0 1px var(--border-h);transform:translateY(-2px)}
+.post-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.5),0 0 0 1px var(--border-h);transform:translateX(3px)}
+/* Button glow on hover */
+.wh-btn:hover,.report-btn:hover,.modal-submit:hover,.bn-btn:hover{box-shadow:0 4px 20px rgba(78,140,200,.25)}
+body.active .wh-btn:hover,body.active .report-btn:hover,body.active .modal-submit:hover{box-shadow:0 4px 20px rgba(240,236,230,.2)}
+/* Active state: cream button bg needs dark text */
+body.active .wh-btn,body.active .report-btn,body.active .modal-submit{color:#0b1c36}
+/* Alert post left border glow */
+.post-card[data-type="alert"]{border-left-width:3px}
+body.active .recent-post{border-color:rgba(240,236,230,.4);box-shadow:0 0 30px rgba(240,236,230,.08)}
+
+.live-pill{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:5px 14px;border-radius:100px;border:1px solid var(--accent-border);background:var(--accent-dim);color:var(--accent);margin-bottom:20px;transition:all var(--t)}
+.live-pill-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
+body.active .live-pill-dot,body.warning .live-pill-dot{animation:dot-pulse 1s ease-in-out infinite}
+.status-headline{font-family:var(--display);font-size:clamp(52px,11vw,108px);font-weight:800;letter-spacing:-2px;line-height:.92;color:var(--text);margin-bottom:14px;transition:color .4s,text-shadow .4s}
+.status-subdeck{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;margin-bottom:22px;opacity:.9}
+.status-desc{font-size:15px;color:var(--text2);max-width:480px;margin:0 auto 28px;line-height:1.78}
+.score-meter{display:flex;align-items:center;gap:10px;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:28px}
+.wave-meta{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:20px;margin-top:6px}
+.recent-post{background:var(--surface);border:1px solid var(--accent-border);border-radius:var(--r);padding:18px 22px;max-width:520px;margin:0 auto 20px;text-align:left;text-decoration:none;display:block;transition:background var(--t),border-color var(--t),transform var(--t)}
+.recent-post:hover{background:var(--surface-h);transform:translateY(-2px)}
+.rp-source{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:6px}
+.rp-title{font-size:15px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:10px}
+.rp-meta{display:flex;gap:14px;font-family:var(--mono);font-size:11px;color:var(--text3)}
+.rp-meta .votes{color:var(--accent);font-weight:700}
+.rp-arrow{margin-left:auto;font-size:13px;color:var(--text3)}
+.meter-track{width:160px;height:5px;background:var(--border);border-radius:100px;overflow:hidden}
+.meter-fill{height:100%;background:linear-gradient(90deg,var(--accent),rgba(255,255,255,.85));border-radius:100px;transition:width .9s cubic-bezier(.4,0,.2,1),background 1.2s}
+.data-notice{margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--text3);text-align:center}
+
+/* Sep */
+.sep{display:flex;align-items:center;gap:14px;padding:0 28px;margin-bottom:20px}
+.sep span{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);white-space:nowrap}
+.sep::before,.sep::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
+
+/* Feed */
+.feed{max-width:720px;margin:0 auto;padding:0 20px 32px}
+.feed-controls{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.filter-btn{background:var(--surface);border:1px solid var(--border);color:var(--text3);padding:5px 14px;border-radius:8px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all var(--t)}
+.filter-btn:hover{color:var(--text2);border-color:var(--border-h)}
+.filter-btn.active{background:var(--accent-dim);border-color:var(--accent-border);color:var(--accent)}
+.feed-count{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--text3)}
+.posts{display:flex;flex-direction:column;gap:6px}
+.post-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;text-decoration:none;transition:background var(--t),border-color var(--t),transform var(--t)}
+.post-card:hover{background:var(--surface-h);border-color:var(--border-h);transform:translateX(3px)}
+.post-card[data-type="alert"]{border-left:2px solid var(--accent)}
+.pc-votes{text-align:center}
+.pc-votes-num{font-family:var(--display);font-size:17px;font-weight:800;color:var(--text);line-height:1}
+.pc-votes-lbl{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:2px}
+.pc-body{min-width:0}
+.pc-title{font-size:13px;font-weight:500;color:var(--text);line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:4px}
+.pc-meta{display:flex;gap:8px;align-items:center;font-family:var(--mono);font-size:10px;color:var(--text3);flex-wrap:wrap}
+.tag{padding:1px 7px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.tag-alert{background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-border)}
+.tag-question{background:rgba(148,163,184,.1);color:#8aafc8;border:1px solid rgba(148,163,184,.2)}
+.tag-verified{background:rgba(74,171,138,.1);color:#4aab8a;border:1px solid rgba(74,171,138,.25)}
+.pc-link-icon{color:var(--text3);font-size:16px;transition:color var(--t)}
+.post-card:hover .pc-link-icon{color:var(--text2)}
+
+/* Graph */
+.graph-wrap{max-width:720px;margin:0 auto;padding:0 20px 32px}
+.graph-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 24px 16px}
+.graph-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:12px;flex-wrap:wrap}
+.graph-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
+.graph-sub{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.graph-stats{display:flex;gap:16px;flex-shrink:0}
+.gs-item{text-align:center}
+.gs-item strong{font-family:var(--display);font-size:18px;font-weight:800;color:var(--text);display:block;line-height:1}
+.gs-item span{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.graph-chart{display:flex;align-items:flex-end;gap:3px;height:88px;margin-bottom:6px}
+.g-bar{flex:1;border-radius:3px 3px 0 0;background:rgba(255,255,255,.05);min-height:2px;cursor:pointer;transition:background var(--t)}
+.g-bar.has-data{background:rgba(78,140,200,.3)}
+.g-bar.has-data:hover{background:rgba(78,140,200,.65)}
+body.active  .g-bar.has-data{background:rgba(240,236,230,.28)}
+body.active  .g-bar.has-data:hover{background:rgba(240,236,230,.6)}
+body.warning .g-bar.has-data{background:rgba(196,145,58,.3)}
+body.warning .g-bar.has-data:hover{background:rgba(196,145,58,.65)}
+.g-bar.cur{outline:1px solid rgba(255,255,255,.15)}
+.graph-labels{display:flex;gap:3px}
+.g-lbl{flex:1;font-family:var(--mono);font-size:10px;color:var(--text3);text-align:center;line-height:1.2}
+
+/* Section */
+.section-wrap{max-width:720px;margin:0 auto;padding:0 20px 32px}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.info-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px}
+.info-card-icon{width:22px;height:22px;margin-bottom:14px;display:block;color:var(--accent);opacity:.85}
+.info-card-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
+.info-card-body{font-size:12px;color:var(--text2);line-height:1.65}
+.info-card-body a{color:var(--accent);text-decoration:none}
+.info-card-body a:hover{text-decoration:underline}
+.info-card-body strong{color:var(--text)}
+
+/* Safety tips */
+.tips-list{display:flex;flex-direction:column;gap:8px}
+.tip-row{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text2);line-height:1.5}
+.tip-num{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.04em;flex-shrink:0;padding-top:1px;min-width:26px}
+.tip-row strong{color:var(--text)}
+
+/* Resources */
+.resource-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.resource-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;text-decoration:none;display:flex;align-items:flex-start;gap:12px;transition:background var(--t),border-color var(--t)}
+.resource-card:hover{background:var(--surface-h);border-color:var(--border-h)}
+.rc-icon{width:18px;height:18px;flex-shrink:0;margin-top:2px;color:var(--text3)}
+.rc-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px}
+.rc-desc{font-size:11px;color:var(--text3);line-height:1.4}
+.rc-tag{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:4px}
+
+/* Webhooks */
+.wh-wrap{max-width:720px;margin:0 auto;padding:0 20px 32px}
+.wh-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px}
+.wh-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.wh-desc{font-size:12px;color:var(--text2);margin-bottom:18px;line-height:1.6}
+.wh-input-row{display:flex;gap:8px}
+.wh-input{flex:1;background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:8px;font-family:var(--mono);font-size:12px;outline:none;transition:border-color var(--t)}
+.wh-input::placeholder{color:var(--text3)}
+.wh-input:focus{border-color:var(--accent-border)}
+.wh-btn{background:var(--accent);color:#fff;border:none;padding:9px 18px;border-radius:8px;font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer;transition:opacity var(--t);white-space:nowrap}
+.wh-btn:hover{opacity:.85}
+.wh-btn:disabled{opacity:.4;cursor:not-allowed}
+.wh-btn-sm{background:var(--surface);border:1px solid var(--border);color:var(--text2);padding:6px 14px;border-radius:8px;font-family:var(--mono);font-size:11px;font-weight:700;cursor:pointer;transition:all var(--t);white-space:nowrap}
+.wh-btn-sm:hover{background:var(--surface-h);border-color:var(--border-h);color:var(--text)}
+.wh-btn-sm:disabled{opacity:.4;cursor:not-allowed}
+.wh-btn-danger{background:transparent;border:1px solid var(--border);color:var(--text2)}
+.wh-btn-danger:hover{border-color:#f0ece6;color:#f0ece6}
+.wh-active-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.wh-active-indicator{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;color:var(--text2)}
+.wh-dot{width:7px;height:7px;border-radius:50%;background:#4aab8a;box-shadow:0 0 6px rgba(74,171,138,.7);animation:dot-pulse 2s ease-in-out infinite}
+.wh-id{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.wh-id code{background:var(--bg2);border:1px solid var(--border);padding:2px 8px;border-radius:4px;font-size:10px;color:var(--text2)}
+.wh-msg{margin-top:10px;font-family:var(--mono);font-size:11px;padding:7px 11px;border-radius:7px;display:none}
+.wh-msg.ok {background:rgba(74,171,138,.1); color:#4aab8a;border:1px solid rgba(74,171,138,.25);display:block}
+.wh-msg.err{background:rgba(240,236,230,.07);color:#f0ece6;border:1px solid rgba(240,236,230,.2);display:block}
+.wh-update-form{margin-top:12px;display:none}
+.wh-update-form.open{display:block}
+.wh-privacy{margin-top:14px;font-family:var(--mono);font-size:10px;color:var(--text3);line-height:1.6;display:flex;gap:8px;align-items:flex-start;border-top:1px solid var(--border);padding-top:14px}
+
+/* Report */
+.report-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px;display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.report-left{flex:1;min-width:200px}
+.report-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.report-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:14px}
+.report-count-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.report-count-badge{background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent);font-family:var(--mono);font-size:11px;font-weight:700;padding:4px 12px;border-radius:100px}
+.report-count-label{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.exec-breakdown{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.exec-chip{font-family:var(--mono);font-size:10px;background:var(--bg2);border:1px solid var(--border);color:var(--text2);padding:3px 9px;border-radius:100px;display:flex;gap:5px}
+.exec-chip span{color:var(--text3)}
+.report-btn{background:var(--accent);color:#fff;border:none;padding:10px 22px;border-radius:8px;font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer;transition:opacity var(--t);white-space:nowrap;flex-shrink:0;margin-top:4px}
+.report-btn:hover{opacity:.85}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:4px}
+.faq-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color var(--t)}
+.faq-item.open{border-color:var(--border-h)}
+.faq-q{width:100%;background:none;border:none;color:var(--text);font-family:var(--sans);font-size:13px;font-weight:500;padding:14px 18px;text-align:left;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:background var(--t)}
+.faq-q:hover{background:var(--surface-h)}
+.faq-chevron{flex-shrink:0;width:16px;height:16px;color:var(--text3);transition:transform var(--t)}
+.faq-item.open .faq-chevron{transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s cubic-bezier(.4,0,.2,1)}
+.faq-item.open .faq-a{max-height:500px}
+.faq-a-inner{padding:12px 18px 16px;font-size:12px;color:var(--text2);line-height:1.7;border-top:1px solid var(--border)}
+.faq-a-inner a{color:var(--accent);text-decoration:none}
+.faq-a-inner a:hover{text-decoration:underline}
+.faq-a-inner strong{color:var(--text)}
+.faq-a-inner code{background:var(--bg2);border:1px solid var(--border);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:11px}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(6,10,20,.85);backdrop-filter:blur(8px);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity var(--t)}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:#081828;border:1px solid var(--border-h);border-radius:18px;padding:28px;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;transform:scale(.96);transition:transform var(--t)}
+.modal-overlay.open .modal{transform:scale(1)}
+.modal-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;gap:12px}
+.modal-title{font-size:16px;font-weight:700;color:var(--text)}
+.modal-sub{font-size:12px;color:var(--text2);margin-top:3px}
+.modal-close{background:none;border:none;color:var(--text3);cursor:pointer;padding:4px;border-radius:6px;font-size:20px;line-height:1;transition:color var(--t)}
+.modal-close:hover{color:var(--text)}
+.drop-zone{border:2px dashed var(--border);border-radius:12px;padding:32px 20px;text-align:center;cursor:pointer;transition:border-color var(--t),background var(--t);margin-bottom:16px;position:relative;overflow:hidden}
+.drop-zone:hover,.drop-zone.drag{border-color:var(--accent-border);background:var(--accent-dim)}
+.drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.drop-icon{font-size:28px;margin-bottom:8px;display:block}
+.drop-text{font-size:13px;color:var(--text2);margin-bottom:4px}
+.drop-sub{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.drop-preview{display:none;max-width:100%;border-radius:8px;margin-top:12px;max-height:140px;object-fit:contain}
+.ocr-status{font-family:var(--mono);font-size:11px;padding:8px 12px;border-radius:8px;margin-bottom:14px;display:none}
+.ocr-status.scanning{background:rgba(196,145,58,.08);color:#c4913a;border:1px solid rgba(196,145,58,.22);display:block}
+.ocr-status.pass{background:rgba(74,171,138,.08);color:#4aab8a;border:1px solid rgba(74,171,138,.22);display:block}
+.ocr-status.fail{background:rgba(240,236,230,.07);color:#f0ece6;border:1px solid rgba(240,236,230,.2);display:block}
+.ocr-bar{height:3px;background:var(--border);border-radius:100px;margin-top:6px;overflow:hidden;display:none}
+.ocr-bar.show{display:block}
+.ocr-bar-fill{height:100%;background:#c4913a;border-radius:100px;width:0;transition:width .2s}
+.form-row{margin-bottom:14px}
+.form-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;display:block}
+.form-select{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:9px 12px;border-radius:8px;font-family:var(--mono);font-size:12px;outline:none;transition:border-color var(--t);cursor:pointer;appearance:none;-webkit-appearance:none}
+.form-select:focus{border-color:var(--accent-border)}
+.form-select option{background:#081828}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-footer{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.modal-submit{background:var(--accent);color:#fff;border:none;padding:11px;border-radius:9px;font-family:var(--mono);font-size:13px;font-weight:700;cursor:pointer;transition:opacity var(--t);width:100%}
+.modal-submit:hover{opacity:.85}
+.modal-submit:disabled{opacity:.35;cursor:not-allowed}
+.modal-note{font-family:var(--mono);font-size:11px;color:var(--text3);text-align:center;line-height:1.5}
+
+/* Toasts */
+.toast-container{position:fixed;bottom:24px;right:24px;z-index:600;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.toast{background:#081828;border:1px solid var(--border-h);border-radius:10px;padding:10px 16px;font-family:var(--mono);font-size:12px;color:var(--text);max-width:320px;box-shadow:0 8px 32px rgba(0,0,0,.5);animation:toastIn .25s cubic-bezier(.4,0,.2,1) both;display:flex;align-items:center;gap:10px}
+.toast.leaving{animation:toastOut .25s cubic-bezier(.4,0,.2,1) forwards}
+.toast-icon{font-size:14px;flex-shrink:0}
+@keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes toastOut{to{opacity:0;transform:translateX(20px)}}
+
+/* Spinner */
+.state-box{text-align:center;padding:60px 24px;color:var(--text3);font-family:var(--mono);font-size:12px}
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Footer */
+footer{text-align:center;padding:28px 24px;font-family:var(--mono);font-size:10px;color:var(--text3);border-top:1px solid var(--border);line-height:2.2}
+footer a{color:var(--text3);text-decoration:none}
+footer a:hover{color:var(--text2)}
+.footer-pledges{display:flex;justify-content:center;flex-wrap:wrap;gap:16px;margin:10px 0;font-size:10px;color:var(--text3)}
+.pledge{display:flex;align-items:center;gap:5px}
+
+/* Legal modal */
+.legal-tabs{display:flex;gap:4px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:12px}
+.legal-tab-btn{background:none;border:1px solid transparent;color:var(--text3);font-family:var(--mono);font-size:11px;font-weight:700;cursor:pointer;padding:5px 14px;border-radius:7px;transition:all var(--t)}
+.legal-tab-btn:hover{color:var(--text2);background:var(--surface-h)}
+.legal-tab-btn.active{color:var(--text);background:var(--surface-h);border-color:var(--border-h)}
+.legal-body{font-size:12px;color:var(--text2);line-height:1.75;max-height:58vh;overflow-y:auto;padding-right:6px}
+.legal-body h3{font-size:11px;font-weight:700;color:var(--text);margin:18px 0 5px;letter-spacing:.06em;text-transform:uppercase}
+.legal-body h3:first-child{margin-top:0}
+.legal-body p{margin-bottom:10px}
+.legal-body ul{padding-left:18px;margin-bottom:10px}
+.legal-body li{margin-bottom:5px}
+.legal-body a{color:var(--accent);text-decoration:none}
+.legal-body a:hover{text-decoration:underline}
+.legal-body strong{color:var(--text)}
+.legal-body em{color:var(--text3);font-style:normal;font-size:11px}
+.tag-info{background:rgba(148,163,184,.1);color:#7a9ab5;border:1px solid rgba(148,163,184,.2)}
+
+/* Ban report nudge */
+.ban-nudge{position:fixed;bottom:28px;left:28px;z-index:400;background:#081828;border:1px solid rgba(240,236,230,.22);border-radius:16px;padding:18px 20px 16px;max-width:260px;box-shadow:0 8px 40px rgba(0,0,0,.55),0 0 0 1px rgba(240,236,230,.06);animation:nudgeIn .45s cubic-bezier(.34,1.56,.64,1) both}
+.ban-nudge.hidden{display:none}
+@keyframes nudgeIn{from{opacity:0;transform:translateY(18px) scale(.93)}to{opacity:1;transform:translateY(0) scale(1)}}
+body.active .ban-nudge{border-color:rgba(240,236,230,.45);box-shadow:0 8px 40px rgba(240,236,230,.08),0 0 0 1px rgba(240,236,230,.12)}
+.bn-close{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--text3);cursor:pointer;padding:4px;border-radius:4px;font-size:13px;line-height:1;transition:color var(--t)}
+.bn-close:hover{color:var(--text)}
+.bn-icon{display:block;margin-bottom:8px}
+.bn-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:5px;padding-right:18px;line-height:1.3}
+.bn-sub{font-size:11px;color:var(--text2);line-height:1.6;margin-bottom:13px}
+.bn-btn{display:block;width:100%;background:#f0ece6;color:#0b1c36;border:none;padding:10px 14px;border-radius:9px;font-family:var(--mono);font-size:11px;font-weight:700;cursor:pointer;transition:opacity var(--t);letter-spacing:.03em;text-align:center}
+.bn-btn:hover{opacity:.85}
+.hdr-report-btn{background:rgba(240,236,230,.07);border:1px solid rgba(240,236,230,.22);color:#f0ece6;padding:4px 12px;border-radius:100px;font-family:var(--mono);font-size:10px;font-weight:700;cursor:pointer;transition:all var(--t);white-space:nowrap;display:flex;align-items:center;gap:5px}
+.hdr-report-btn:hover{background:rgba(240,236,230,.14);border-color:rgba(240,236,230,.38)}
+.hdr-report-btn svg{width:12px;height:12px;flex-shrink:0}
+
+/* Per-post vote buttons (alert cards only) */
+.pc-vote-row{display:flex;gap:5px;align-items:center;margin-top:7px;flex-wrap:wrap}
+.pc-vote-btn{background:var(--bg2);border:1px solid var(--border);color:var(--text3);padding:2px 8px;border-radius:5px;font-family:var(--mono);font-size:10px;font-weight:700;cursor:pointer;transition:all var(--t);display:inline-flex;align-items:center;gap:3px;line-height:1.6}
+.pc-vote-btn:hover:not(:disabled){background:var(--surface-h);border-color:var(--border-h);color:var(--text2)}
+.pc-vote-btn.voted-up{background:rgba(74,171,138,.1);border-color:rgba(74,171,138,.36);color:#4aab8a}
+.pc-vote-btn.voted-down{background:rgba(240,236,230,.07);border-color:rgba(240,236,230,.28);color:#f0ece6}
+.pc-vote-btn:disabled{opacity:.55;cursor:not-allowed}
+.pc-vote-lbl{font-family:var(--mono);font-size:10px;color:var(--text3)}
+
+/* Contact modal */
+.contact-textarea{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-family:var(--mono);font-size:12px;outline:none;resize:vertical;min-height:120px;transition:border-color var(--t);line-height:1.6}
+.contact-textarea::placeholder{color:var(--text3)}
+.contact-textarea:focus{border-color:var(--accent-border)}
+.contact-char-count{font-family:var(--mono);font-size:10px;color:var(--text3);text-align:right;margin-top:4px}
+.contact-msg{margin-top:10px;font-family:var(--mono);font-size:11px;padding:7px 11px;border-radius:7px;display:none}
+.contact-msg.ok{background:rgba(74,171,138,.1);color:#4aab8a;border:1px solid rgba(74,171,138,.25);display:block}
+.contact-msg.err{background:rgba(240,236,230,.07);color:#f0ece6;border:1px solid rgba(240,236,230,.2);display:block}
+
+/* Footer */
+footer{padding:18px 24px 14px;border-top:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--text3)}
+.footer-inner{max-width:720px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:8px}
+.footer-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
+.footer-pledges{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 10px}
+.pledge{display:flex;align-items:center;gap:3px;font-size:9.5px;color:var(--text3)}
+.footer-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:3px 8px;font-size:10px}
+.footer-nav a{color:var(--text3);text-decoration:none;transition:color var(--t)}
+.footer-nav a:hover{color:var(--text2)}
+.footer-sep{opacity:.3}
+.footer-gh-btn{display:inline-flex;align-items:center;gap:5px;background:var(--surface);border:1px solid var(--border);color:var(--text2);padding:4px 10px;border-radius:6px;font-family:var(--mono);font-size:10px;font-weight:700;text-decoration:none;transition:all var(--t);flex-shrink:0}
+.footer-gh-btn:hover{background:var(--surface-h);border-color:var(--border-h);color:var(--text)}
+.footer-gh-btn svg{width:12px;height:12px;flex-shrink:0}
+.footer-disclaimer{font-family:var(--mono);font-size:10px;color:var(--text3);text-align:center;opacity:.65}
+img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-.1em}
+
+/* Tablet */
+@media(max-width:900px){
+  .hero{padding:64px 20px 150px}
+  .status-headline{font-size:clamp(44px,10vw,96px)}
+  .section-wrap,.feed,.graph-wrap,.wh-wrap{padding-left:16px;padding-right:16px}
+  .sep{padding:0 16px}
+}
+
+/* Mobile */
+@media(max-width:600px){
+  header{padding:0 14px;gap:6px}
+  .last-check,.countdown{display:none}
+  .hero{padding:52px 16px 128px;min-height:auto}
+  .jwave-wrap{height:128px}
+  .status-headline{font-size:clamp(40px,13vw,72px);letter-spacing:-1.5px}
+  .status-subdeck{font-size:10px;letter-spacing:.1em}
+  .status-desc{font-size:14px;margin-bottom:20px}
+  .score-meter{gap:8px}
+  .meter-track{width:130px}
+  .recent-post{padding:14px 16px}
+  .post-card{grid-template-columns:36px 1fr auto;gap:10px}
+  .graph-head{flex-direction:column}
+  .graph-stats{justify-content:flex-start}
+  .wh-input-row{flex-direction:column}
+  .form-grid{grid-template-columns:1fr}
+  .info-grid,.resource-grid{grid-template-columns:1fr}
+  .report-card{flex-direction:column}
+  .modal{padding:20px 18px;border-radius:14px}
+  .ban-nudge{left:12px;right:12px;max-width:none;bottom:16px}
+  .hdr-report-txt{display:none}
+  .section-wrap,.feed,.graph-wrap,.wh-wrap{padding-left:12px;padding-right:12px}
+  .sep{padding:0 12px}
+  .toast-container{bottom:16px;right:12px;left:12px;align-items:stretch}
+  .toast{max-width:none}
+}
+
+/* Small phones */
+@media(max-width:390px){
+  .status-headline{font-size:clamp(34px,13.5vw,58px);letter-spacing:-1px}
+  .live-pill{font-size:9px;padding:4px 11px;letter-spacing:.1em}
+  .status-desc{font-size:13px}
+  .wh-card,.report-card{padding:16px 14px}
+}
+
+/* Short/landscape viewports */
+@media(max-height:500px){
+  .hero{min-height:auto;padding:32px 20px 118px}
+  .jwave-wrap{height:118px}
+  .status-headline{font-size:clamp(32px,9vh,72px)}
+  .live-pill{margin-bottom:12px}
+  .status-subdeck{margin-bottom:14px}
+  .status-desc{margin-bottom:16px;font-size:14px}
+  .score-meter{margin-bottom:16px}
+}
+</style>
+</head>
+<body class="loading">
+
+<header>
+  <a class="logo" href="/">
+    <span class="logo-dot"></span>
+    Roblox Ban Wave
+  </a>
+  <span class="header-badge" id="headerBadge">Checking…</span>
+  <div class="header-right">
+    <span class="countdown" id="countdown" title="Next auto-refresh">
+      <svg class="countdown-ring" viewBox="0 0 14 14">
+        <circle cx="7" cy="7" r="5"/>
+        <circle class="prog" id="cdrProg" cx="7" cy="7" r="5" stroke-dasharray="31.4" stroke-dashoffset="0"/>
+      </svg>
+      <span id="cdrText">5:00</span>
+    </span>
+    <span class="last-check" id="lastCheck">-</span>
+    <a class="hdr-icon-btn" href="/api/rss" target="_blank" rel="noopener" title="Subscribe via RSS">
+      <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="3" cy="13" r="1.5"/><path d="M1.5 8.5A5.5 5.5 0 0 1 7 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M1.5 4A9.5 9.5 0 0 1 12 14.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </a>
+    <button class="hdr-icon-btn" onclick="shareStatus()" title="Share">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="3" r="1.5"/><circle cx="4" cy="8" r="1.5"/><circle cx="12" cy="13" r="1.5"/><line x1="5.5" y1="7" x2="10.5" y2="4"/><line x1="5.5" y1="9" x2="10.5" y2="12"/></svg>
+    </button>
+    <button class="hdr-report-btn" onclick="openReportModal()" title="Got banned? Report it to help track the wave">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M8 2L14 4.5V8c0 3.5-2.8 5.8-6 7C2.8 13.8 0 11.5 0 8V4.5L8 2z" transform="translate(1,0)"/></svg>
+      <span class="hdr-report-txt">Got banned?</span>
+    </button>
+    <div class="lang-wrap">
+      <button class="hdr-icon-btn" onclick="toggleLangMenu(event)" title="Translate this page">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6.5"/><path d="M8 1.5c-2 2-3 4-3 6.5s1 4.5 3 6.5"/><path d="M8 1.5c2 2 3 4 3 6.5s-1 4.5-3 6.5"/><line x1="1.5" y1="8" x2="14.5" y2="8"/><line x1="2.5" y1="5" x2="13.5" y2="5"/><line x1="2.5" y1="11" x2="13.5" y2="11"/></svg>
+      </button>
+      <div class="lang-menu" id="langMenu">
+        <button class="lang-btn" onclick="translate('es')">🇪🇸 Spanish</button>
+        <button class="lang-btn" onclick="translate('fr')">🇫🇷 French</button>
+        <button class="lang-btn" onclick="translate('de')">🇩🇪 German</button>
+        <button class="lang-btn" onclick="translate('pt')">🇧🇷 Portuguese</button>
+        <button class="lang-btn" onclick="translate('ru')">🇷🇺 Russian</button>
+        <button class="lang-btn" onclick="translate('ja')">🇯🇵 Japanese</button>
+        <button class="lang-btn" onclick="translate('ko')">🇰🇷 Korean</button>
+        <button class="lang-btn" onclick="translate('zh-CN')">🇨🇳 Chinese</button>
+        <button class="lang-btn" onclick="translate('ar')">🇸🇦 Arabic</button>
+        <button class="lang-btn" onclick="translate('id')">🇮🇩 Indonesian</button>
+        <button class="lang-btn" onclick="translate('tr')">🇹🇷 Turkish</button>
+        <button class="lang-btn" onclick="translate('vi')">🇻🇳 Vietnamese</button>
+        <button class="lang-btn" onclick="translate('pl')">🇵🇱 Polish</button>
+        <button class="lang-btn" onclick="translate('th')">🇹🇭 Thai</button>
+      </div>
+    </div>
+    <button class="refresh-btn" id="refreshBtn" onclick="load()">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13.5 8A5.5 5.5 0 1 1 8 2.5c1.8 0 3.4.87 4.4 2.2" stroke-linecap="round"/><path d="M13.5 2.5v2.2h-2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Refresh
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner" id="heroInner">
+    <div class="state-box"><div class="spinner"></div><br>Checking r/robloxhackers…</div>
+  </div>
+  <div class="jwave-wrap" aria-hidden="true">
+    <svg viewBox="0 0 1440 150" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="g-back" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#8cb8e8" stop-opacity=".58"/>
+          <stop offset="100%" stop-color="#4e7ec0" stop-opacity=".46"/>
+        </linearGradient>
+        <linearGradient id="g-front" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#5c94d8" stop-opacity=".72"/>
+          <stop offset="100%" stop-color="#3464b6" stop-opacity=".62"/>
+        </linearGradient>
+        <linearGradient id="g-refl" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#c8dff6" stop-opacity=".28"/>
+          <stop offset="100%" stop-color="#c8dff6" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <!-- Back wave — slow gentle drift -->
+      <g class="jw-g-back">
+        <path fill="url(#g-back)" d="M-10,100 C80,64 180,38 300,46 C368,50 400,70 462,66 C524,62 556,44 634,34 C702,25 742,31 782,42 C822,53 842,70 902,72 C962,74 1002,55 1082,43 C1152,33 1202,29 1272,36 C1332,42 1402,66 1450,80 L1450,150 L-10,150 Z"/>
+        <path fill="url(#g-refl)" d="M-10,100 C80,64 180,38 300,46 C368,50 400,70 462,66 C524,62 556,44 634,34 C702,25 742,31 782,42 C822,53 842,70 902,72 C962,74 1002,55 1082,43 C1152,33 1202,29 1272,36 C1332,42 1402,66 1450,80 L1450,100 C1402,86 1332,62 1272,56 C1202,49 1152,53 1082,63 C1002,75 962,94 902,92 C842,90 822,73 782,62 C742,51 702,45 634,54 C556,64 524,82 462,86 C400,90 368,70 300,66 C180,58 80,84 -10,120 Z"/>
+        <path class="jw-line" d="M-10,100 C80,64 180,38 300,46 C368,50 400,70 462,66 C524,62 556,44 634,34 C702,25 742,31 782,42 C822,53 842,70 902,72 C962,74 1002,55 1082,43 C1152,33 1202,29 1272,36 C1332,42 1402,66 1450,80"/>
+      </g>
+      <!-- Front wave — faster, opposite phase -->
+      <g class="jw-g-front">
+        <path fill="url(#g-front)" d="M-10,114 C100,96 222,84 362,93 C432,97 476,109 542,107 C610,105 650,92 724,85 C806,77 856,94 926,104 C978,111 1032,114 1104,108 C1174,101 1244,81 1324,75 C1378,71 1422,86 1450,96 L1450,150 L-10,150 Z"/>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<div class="sep" id="feedSep" style="display:none"><span>Recent reports · r/robloxhackers</span></div>
+<div class="feed" id="feedSection" style="display:none">
+  <div class="feed-controls">
+    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+    <button class="filter-btn" onclick="setFilter('alert',this)">Alerts</button>
+    <button class="filter-btn" onclick="setFilter('question',this)">Questions</button>
+    <span class="feed-count" id="feedCount"></span>
+  </div>
+  <div class="posts" id="postsContainer"></div>
+</div>
+
+<div class="sep" id="graphSep" style="display:none"><span>Banwave mention frequency</span></div>
+<div class="graph-wrap" id="graphSection" style="display:none">
+  <div class="graph-card" id="graphCard"></div>
+</div>
+
+<!-- About -->
+<div class="sep"><span>About ban waves</span></div>
+<div class="section-wrap">
+  <div class="info-grid">
+    <div class="info-card">
+      <svg class="info-card-icon" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2,11 C4,7 6,5 8,7 C10,9 12,13 14,11 C16,9 18,7 20,9"/><path d="M2,16 C4,12 6,10 8,12 C10,14 12,18 14,16 C16,14 18,12 20,14"/></svg>
+      <div class="info-card-title">What is a ban wave?</div>
+      <div class="info-card-body">A ban wave is when Roblox's moderation system terminates large numbers of accounts simultaneously - typically those detected running unauthorised executors or scripts. They often happen after Roblox updates its anti-cheat or runs a sweep.</div>
+    </div>
+    <div class="info-card">
+      <svg class="info-card-icon" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11,2 L18,5 L18,11 C18,15.5 15,18.5 11,20 C7,18.5 4,15.5 4,11 L4,5 Z"/><path d="M8,11 L10,13 L14,9"/></svg>
+      <div class="info-card-title">What is Hyperion / Byfron?</div>
+      <div class="info-card-body"><strong>Hyperion</strong> (formerly Byfron) is Roblox's kernel-level anti-cheat engine, acquired in 2022 and deployed in 2023. It can detect executor signatures, memory manipulation, and DLL injection. Updates to Hyperion are the most common trigger for large ban waves.</div>
+    </div>
+    <div class="info-card">
+      <svg class="info-card-icon" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="11" y1="11" x2="11" y2="18"/><circle cx="11" cy="11" r="1.5" fill="currentColor" stroke="none"/><path d="M6,8 C6,5.2 8.2,3 11,3 C13.8,3 16,5.2 16,8"/><path d="M8.5,10.5 C8.5,9 9.6,8 11,8 C12.4,8 13.5,9 13.5,10.5"/></svg>
+      <div class="info-card-title">How does this tracker work?</div>
+      <div class="info-card-body">We cache posts from <a href="https://reddit.com/r/robloxhackers" target="_blank" rel="noopener">r/robloxhackers</a> server-side every 5 minutes. Posts are scored by recency and upvotes to determine status. <strong>This is not 100% accurate</strong> - false positives are possible and new waves may take time to appear.</div>
+    </div>
+    <div class="info-card">
+      <svg class="info-card-icon" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8.5"/><polyline points="9,7 13,11 9,15"/></svg>
+      <div class="info-card-title">What should I do during a wave?</div>
+      <div class="info-card-body">Stop all executors immediately. Close injectors before launching Roblox. Use an alt account to test first. Wait at least 24-48 h after reports stop before resuming. Monitor this page and subscribe to Discord notifications. <strong>When in doubt - don't.</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- Safety Tips -->
+<div class="sep"><span>Executor safety tips</span></div>
+<div class="section-wrap">
+  <div class="tips-list">
+    <div class="tip-row"><span class="tip-num">01</span><div><strong>Always test on an alt account first.</strong> Never run a new executor or script on your main account during or just after a wave.</div></div>
+    <div class="tip-row"><span class="tip-num">02</span><div><strong>Close your executor completely before launching Roblox.</strong> Hyperion scans process memory before the game even starts — having an executor in memory is enough to get flagged.</div></div>
+    <div class="tip-row"><span class="tip-num">03</span><div><strong>Wait 48 hours after reports die down.</strong> Detection sweeps can run in waves over multiple days. The coast isn't clear just because a few hours have passed.</div></div>
+    <div class="tip-row"><span class="tip-num">04</span><div><strong>Subscribe to Discord notifications below.</strong> You'll get an instant alert the moment this tracker detects an active ban wave — no need to keep checking the site.</div></div>
+    <div class="tip-row"><span class="tip-num">05</span><div><strong>Cross-reference multiple sources.</strong> This tracker can lag or produce false positives. Always check <a href="https://reddit.com/r/robloxhackers" target="_blank" rel="noopener">r/robloxhackers</a> directly for the most recent discussion.</div></div>
+    <div class="tip-row"><span class="tip-num">06</span><div><strong>No executor is ban-proof.</strong> Every executor, regardless of claimed "undetected" status, can be flagged in a wave. There is no guaranteed safe option when a sweep is active.</div></div>
+  </div>
+</div>
+
+<!-- Resources -->
+<div class="sep"><span>Resources &amp; links</span></div>
+<div class="section-wrap">
+  <div class="resource-grid">
+    <a class="resource-card" href="https://www.reddit.com/r/robloxhackers/" target="_blank" rel="noopener">
+      <svg class="rc-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="7.5"/><path d="M6,10.5 C6.5,12 7.5,13 9,13 C10.5,13 11.5,12 12,10.5"/><circle cx="6.5" cy="8.5" r="1" fill="currentColor" stroke="none"/><circle cx="11.5" cy="8.5" r="1" fill="currentColor" stroke="none"/><path d="M11.5,4.5 L13,3 M13,3 L14,4.5 M13,3 L12,4.5"/></svg>
+      <div><div class="rc-title">r/robloxhackers</div><div class="rc-desc">Primary community source for ban wave reports and executor news.</div><div class="rc-tag">reddit.com</div></div>
+    </a>
+    <a class="resource-card" href="https://en.help.roblox.com/hc/en-us/articles/203313410" target="_blank" rel="noopener">
+      <svg class="rc-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="2" width="12" height="14" rx="2"/><line x1="6" y1="6" x2="12" y2="6"/><line x1="6" y1="9" x2="12" y2="9"/><line x1="6" y1="12" x2="10" y2="12"/></svg>
+      <div><div class="rc-title">Roblox Community Standards</div><div class="rc-desc">Official rules on what constitutes a bannable offence on the platform.</div><div class="rc-tag">en.help.roblox.com</div></div>
+    </a>
+    <a class="resource-card" href="/api/rss" target="_blank" rel="noopener">
+      <svg class="rc-icon" viewBox="0 0 18 18" fill="currentColor"><circle cx="3.5" cy="14.5" r="1.5"/><path d="M2,9.5 A7,7 0 0 1 9,16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M2,5 A12,12 0 0 1 13,16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <div><div class="rc-title">RSS Feed</div><div class="rc-desc">Subscribe in your RSS reader for automatic ban wave post delivery.</div><div class="rc-tag">robloxbanwave.vercel.app/api/rss</div></div>
+    </a>
+    <a class="resource-card" href="https://www.reddit.com/r/robloxhackers/search/?q=hyperion+byfron&sort=new" target="_blank" rel="noopener">
+      <svg class="rc-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7.5" cy="7.5" r="5"/><line x1="11.5" y1="11.5" x2="15.5" y2="15.5"/></svg>
+      <div><div class="rc-title">Hyperion / Byfron Updates</div><div class="rc-desc">Reddit search for the latest anti-cheat detection and bypass news.</div><div class="rc-tag">reddit.com/r/robloxhackers</div></div>
+    </a>
+  </div>
+</div>
+
+<!-- Webhooks -->
+<div class="sep"><span>Discord notifications</span></div>
+<div class="wh-wrap">
+  <div class="wh-card">
+    <div class="wh-title">Get notified when a ban wave is detected</div>
+    <div class="wh-desc">Add your Discord webhook URL to receive instant alerts. The URL is stored AES-256-GCM encrypted - it never appears in any network response after registration.</div>
+
+    <div id="whForm">
+      <div class="wh-input-row">
+        <input class="wh-input" id="whInput" type="url" placeholder="https://discord.com/api/webhooks/…" autocomplete="off" spellcheck="false">
+        <button class="wh-btn" id="whAddBtn" onclick="addWebhook()">Add Webhook</button>
+      </div>
+      <div class="wh-msg" id="whFormMsg"></div>
+    </div>
+
+    <div id="whActive" style="display:none">
+      <div class="wh-active-row">
+        <div class="wh-active-indicator"><span class="wh-dot"></span>Webhook active</div>
+        <button class="wh-btn-sm" id="testWHBtn" onclick="testWebhook()">Send Test</button>
+        <button class="wh-btn-sm" onclick="toggleUpdateForm()">Update URL</button>
+        <button class="wh-btn-sm wh-btn-danger" onclick="removeWebhook()">Remove</button>
+      </div>
+      <div class="wh-id" id="whIdRow" style="display:none">
+        <span>Webhook ID:</span><code id="whIdCode">-</code>
+        <button class="wh-btn-sm" style="padding:2px 8px;font-size:10px" onclick="copyWebhookId()" title="Copy webhook ID">Copy</button>
+      </div>
+      <div class="wh-update-form" id="whUpdateForm">
+        <div class="wh-input-row">
+          <input class="wh-input" id="whUpdateInput" type="url" placeholder="New Discord webhook URL…" autocomplete="off" spellcheck="false">
+          <button class="wh-btn" id="whUpdateBtn" onclick="submitUpdateWebhook()">Save</button>
+          <button class="wh-btn-sm" onclick="toggleUpdateForm()">Cancel</button>
+        </div>
+        <div class="wh-msg" id="whUpdateMsg"></div>
+      </div>
+      <div class="wh-msg" id="whActiveMsg"></div>
+    </div>
+
+    <div class="wh-privacy">
+      <svg style="flex-shrink:0;width:13px;height:13px;margin-top:1px;color:var(--text3)" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="10" height="7" rx="1.5"/><path d="M4.5,6 L4.5,4 A2.5,2.5 0 0 1 9.5,4 L9.5,6"/></svg>
+      <span>Your URL is encrypted with AES-256-GCM on our server. Only the deletion token (stored in your browser) can remove it. No ads, no tracking, no third parties ever see your webhook.</span>
+    </div>
+  </div>
+</div>
+
+<!-- Verified Bans -->
+<div class="sep"><span>Verified bans today</span></div>
+<div class="section-wrap">
+  <div class="report-card">
+    <div class="report-left">
+      <div class="report-title">Community-verified ban reports</div>
+      <div class="report-desc">Got banned during a wave? Submit a screenshot of your Roblox ban notice. Reports are verified with OCR, anonymous, and grouped by day. The count appears on the most recent post in the feed.</div>
+      <div class="report-count-row">
+        <span class="report-count-badge" id="verifiedCount">-</span>
+        <span class="report-count-label">bans reported today</span>
+      </div>
+      <div class="exec-breakdown" id="execBreakdown"></div>
+    </div>
+    <button class="report-btn" onclick="openReportModal()">Report Your Ban</button>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="sep"><span>Frequently asked questions</span></div>
+<div class="section-wrap" style="padding-bottom:60px">
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Is this tracker 100% accurate?<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="faq-a"><div class="faq-a-inner"><strong>No.</strong> This tracker relies on community posts from r/robloxhackers and is subject to false positives. A single highly-upvoted old post can push the score into WARNING. It can also miss waves that haven't been reported yet. Always cross-reference with multiple sources and check the subreddit directly.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">What do NOT SAFE / USE CAUTION / ALL CLEAR mean?<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="faq-a"><div class="faq-a-inner"><strong>NOT SAFE</strong> - threat score &ge; 3.5. Active ban wave with significant recent reports. Stop all executors immediately.<br><br><strong>USE CAUTION</strong> - threat score &ge; 1.0. Elevated activity — a wave may be starting or winding down. Check the reports before running anything.<br><br><strong>ALL CLEAR</strong> - threat score &lt; 1.0. No significant ban wave activity in the past 14 days. Lower risk, but conditions can change quickly.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">How is the threat score calculated?<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="faq-a"><div class="faq-a-inner">Each post is scored: <code>recency × (log₂(votes + 1) + 0.5) × typeWeight</code><br><br>Recency uses a multi-phase decay modelling the Roblox ban wave lifecycle: 7%/day for the first 24 h (peak threat), 19%/day for days 1–3 (tapering sweep), 28%/day for days 3–7 (cooldown), and 40%/day for days 7–14 (residual). Posts older than 14 days score zero. Alert posts get a 2.5× multiplier; questions get 0.2×. Scores are summed across all posts in the window.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">How often does the data refresh?<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="faq-a"><div class="faq-a-inner">Reddit data is cached server-side and refreshed every 5 minutes. All visitors share this cache - Reddit is never hit directly from your browser. If Reddit rate-limits our server, the site automatically falls back to cached data (up to 60 minutes old) rather than going down. The countdown ring in the header shows time until the next browser refresh.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Are my Discord webhook details safe?<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="faq-a"><div class="faq-a-inner">Yes. Your webhook URL is encrypted with AES-256-GCM before storage. It only travels over HTTPS once during registration and is never returned or logged again. A deletion token (stored only in your browser's localStorage) is required to remove or update it. The server sends notifications directly - your browser never sends the URL after registration.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Can I trust the verified ban count?<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="faq-a"><div class="faq-a-inner">Reports are checked with client-side OCR (Tesseract.js) and server-side keyword validation to confirm the screenshot contains Roblox moderation text. Submissions are rate-limited to 3 per IP per hour. The count is a community signal - not an official figure. Use it as one indicator alongside the Reddit feed.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">How do I set up a Discord webhook?<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="faq-a"><div class="faq-a-inner">In your Discord server: <strong>Edit Channel &gt; Integrations &gt; Webhooks &gt; New Webhook</strong>. Copy the webhook URL and paste it above. You can set the webhook avatar and name "RBX Radar" in Discord's webhook settings panel.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Does this site have ads or trackers?<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="faq-a"><div class="faq-a-inner"><strong>No ads. No trackers. No analytics. Ever.</strong> This site loads Google Fonts for typography (no tracking cookies) and optionally Tesseract.js for client-side OCR when you use the ban report feature. No third-party analytics scripts (no Google Analytics, no Mixpanel, nothing). The site is free and will remain free forever.</div></div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-pledges">
+        <span class="pledge">No ads</span>
+        <span class="pledge">No trackers</span>
+        <span class="pledge">Free forever</span>
+        <span class="pledge">Made in UK</span>
+      </div>
+      <a class="footer-gh-btn" href="https://github.com/FascinatingPistachio/robloxbanwave" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        Star on GitHub
+      </a>
+    </div>
+    <div class="footer-nav">
+      <a href="https://reddit.com/r/robloxhackers" target="_blank" rel="noopener">r/robloxhackers</a><span class="footer-sep"> · </span><a href="/api/rss">RSS</a><span class="footer-sep"> · </span><a href="/privacy" onclick="openLegal('privacy');return false;">Privacy</a><span class="footer-sep"> · </span><a href="/terms" onclick="openLegal('terms');return false;">Terms</a><span class="footer-sep"> · </span><a href="/contact" onclick="openContact();return false;">Contact</a><span class="footer-sep"> · </span><a href="https://github.com/FascinatingPistachio/robloxbanwave/issues" target="_blank" rel="noopener">Bug Reports</a>
+    </div>
+    <div class="footer-disclaimer">Community tracker &mdash; not affiliated with Roblox Corporation</div>
+  </div>
+</footer>
+
+<!-- Legal Modal -->
+<div class="modal-overlay" id="legalModal" onclick="if(event.target===this)closeLegal()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="legalModalTitle" style="max-width:600px">
+    <div class="modal-header">
+      <div><div class="modal-title" id="legalModalTitle">Legal</div><div class="modal-sub">Privacy Notice and Terms of Use for robloxbanwave.vercel.app</div></div>
+      <button class="modal-close" onclick="closeLegal()" aria-label="Close">&#x2715;</button>
+    </div>
+    <div class="legal-tabs">
+      <button class="legal-tab-btn active" data-tab="privacy" onclick="showLegalTab('privacy')">Privacy Notice</button>
+      <button class="legal-tab-btn" data-tab="terms" onclick="showLegalTab('terms')">Terms of Use</button>
+    </div>
+    <div class="legal-body">
+
+      <div class="legal-section" data-tab="privacy">
+        <p><em>Last updated: 27 May 2026. This site is an independent community project operated from the United Kingdom.</em></p>
+
+        <h3>Data we collect and why</h3>
+        <p><strong>IP addresses.</strong> When you register a Discord webhook, submit a ban report, or trigger a notification, your IP address is received by our server. It is immediately hashed with SHA-256 (combined with a secret key) and the resulting hash is used only for rate limiting. The raw IP address is never stored anywhere. Rate-limit hashes expire automatically within 1-24 hours. <em>Legal basis: legitimate interests (preventing service abuse).</em></p>
+        <p><strong>Discord webhook URLs.</strong> If you register a webhook, the URL is encrypted with AES-256-GCM before being stored. A one-time deletion token is placed only in your browser's localStorage. The encrypted URL is kept until you delete it. It is never returned in any API response after registration. <em>Legal basis: performance of a contract (providing the notification service you requested).</em></p>
+        <p><strong>Ban report submissions.</strong> If you submit a ban report, we store the executor name, platform, and a timestamp. Screenshots are processed entirely in your browser (Tesseract.js OCR) and are never uploaded to our servers.</p>
+        <p><strong>Browser localStorage.</strong> We store your webhook deletion token, status timestamps, and UI preference flags in your browser's localStorage only. This data stays on your device and is never transmitted to our servers except the deletion token when you explicitly request removal or an update of your webhook.</p>
+
+        <h3>Third-party services</h3>
+        <ul>
+          <li><strong>Vercel</strong> - hosts this site. May log request metadata per <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">Vercel's privacy policy</a>.</li>
+          <li><strong>Upstash (Vercel KV)</strong> - stores encrypted webhook data and rate-limit hashes. Data may be held in the EU or US. See <a href="https://upstash.com/trust/privacy.pdf" target="_blank" rel="noopener">Upstash's privacy policy</a>.</li>
+          <li><strong>Google Fonts</strong> - fonts are loaded from fonts.googleapis.com on every page visit, sharing your IP and User-Agent with Google. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's privacy policy</a>. You can block this via an ad blocker (the site remains fully functional).</li>
+          <li><strong>unpkg.com / Tesseract.js</strong> - the OCR library is loaded from unpkg.com only when you open the ban report feature. Your IP is shared with their CDN at that point. Your screenshot is never transmitted.</li>
+          <li><strong>Reddit (server-side only)</strong> - ban wave data is fetched from Reddit's public RSS feeds by our server only. Your browser never contacts Reddit directly.</li>
+        </ul>
+
+        <h3>Cookies</h3>
+        <p>This site sets no cookies. We use browser localStorage for the functionality described above. localStorage is not a cookie; it has no expiry and does not leave your device. You can clear it at any time via your browser settings (Settings &gt; Privacy &gt; Site data or Storage).</p>
+
+        <h3>Your rights under UK GDPR and EU GDPR</h3>
+        <p>You have the right to access, rectify, erase, restrict, object to, and port your personal data. Because IP data is stored only as a non-reversible hash and webhook data is accessible only via the token in your browser, you can exercise your right to erasure by deleting your webhook directly on the site. For any other request, contact us via the project's GitHub repository.</p>
+        <p>UK residents may lodge a complaint with the <a href="https://ico.org.uk/make-a-complaint" target="_blank" rel="noopener">Information Commissioner's Office (ICO)</a>. EU residents may contact their national supervisory authority.</p>
+
+        <h3>Data retention</h3>
+        <ul>
+          <li>Rate-limit hashes: 1 hour (notifications/ban reports) to 24 hours (webhook registrations), then automatically deleted</li>
+          <li>Encrypted webhook data: until deleted by you via the site</li>
+          <li>Ban report entries (executor name + platform + timestamp): 9 days, then automatically deleted</li>
+        </ul>
+
+        <h3>International transfers</h3>
+        <p>This site is hosted on Vercel infrastructure (USA and Europe). Data in Vercel KV may be handled by Upstash globally. Both operate under the EU-US Data Privacy Framework and/or Standard Contractual Clauses. By using this site you acknowledge these transfers.</p>
+
+        <h3>Children</h3>
+        <p>This site is not directed at children under 13 years of age (or 16 in jurisdictions where a higher minimum applies). We do not knowingly collect personal data from under-13s. If you believe we have inadvertently done so, please contact us via GitHub.</p>
+
+        <h3>Changes to this notice</h3>
+        <p>We may update this notice at any time. The date at the top reflects the most recent revision. Continued use of the site after a revision constitutes acceptance of the updated notice.</p>
+      </div>
+
+      <div class="legal-section" data-tab="terms" style="display:none">
+        <p><em>Last updated: 27 May 2026. By using this site you agree to these terms.</em></p>
+
+        <h3>1. Independent community project</h3>
+        <p>This site is an independent community project and is not affiliated with, endorsed by, sponsored by, or connected to Roblox Corporation, Roblox Ltd, or any Roblox executor developer. "Roblox," "Roblox Corporation," and all related marks and logos are trademarks of Roblox Corporation. Any reference to Roblox or its products is for informational purposes only.</p>
+
+        <h3>2. Information accuracy and disclaimer</h3>
+        <p>All data displayed is sourced from Reddit community posts and may be inaccurate, incomplete, delayed, or outdated. We make no representation or warranty as to its accuracy or reliability. <strong>Do not rely solely on this site</strong> to make any decision regarding game software use. Always verify information from multiple independent sources.</p>
+
+        <h3>3. Age requirement</h3>
+        <p>This site is not intended for use by persons under 13 years of age (or 16 in certain EU member states). By using this site you confirm you meet the minimum age requirement applicable in your jurisdiction.</p>
+
+        <h3>4. Acceptable use</h3>
+        <p>You must not: submit false, duplicate, or spam ban reports; attempt to circumvent rate limits by any means; use automated tools to scrape, flood, or abuse any part of the service; or use this site in any manner that violates applicable law. We reserve the right to block access to the site without prior notice or reason.</p>
+
+        <h3>5. No warranty</h3>
+        <p>This site is provided "as is" and "as available" without warranty of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, and non-infringement. We do not warrant that the service will be uninterrupted, timely, secure, or error-free.</p>
+
+        <h3>6. Limitation of liability</h3>
+        <p>To the maximum extent permitted by applicable law, we exclude all liability for any direct, indirect, incidental, special, consequential, or exemplary damages arising out of or in connection with your use of, or inability to use, this site, including any loss arising from reliance on ban wave information displayed here. Nothing in these terms excludes or limits liability for death or personal injury caused by negligence, fraud, or any liability that cannot be excluded under applicable law.</p>
+
+        <h3>7. Third-party content and copyright</h3>
+        <p>This site displays summaries of Reddit posts. Copyright in those posts remains with the original authors. Display is consistent with Reddit's public content terms and constitutes nominative fair use or equivalent. If you are a copyright holder and believe your work is being displayed without authorisation, contact us via the project's GitHub repository.</p>
+
+        <h3>8. DMCA and copyright takedown</h3>
+        <p>If you believe content on this site infringes your copyright, submit a written notice via the project's GitHub repository including: (a) identification of the copyrighted work; (b) identification of the infringing material; (c) your contact information; (d) a statement of good faith belief; and (e) a statement that the information in the notice is accurate and, under penalty of perjury, that you are authorised to act on behalf of the rights owner.</p>
+
+        <h3>9. Links to third-party sites</h3>
+        <p>This site contains links to external websites (Reddit, Roblox, Discord). We have no control over and accept no responsibility for the content, privacy practices, or availability of those sites.</p>
+
+        <h3>10. Governing law and jurisdiction</h3>
+        <p>These terms are governed by and construed in accordance with the laws of England and Wales. Any disputes arising under these terms shall be subject to the exclusive jurisdiction of the courts of England and Wales, except where mandatory consumer protection laws in your jurisdiction confer jurisdiction on local courts.</p>
+
+        <h3>11. Consumer rights</h3>
+        <p>If you are a consumer in the UK or EU, nothing in these terms affects your statutory rights under applicable consumer protection legislation, including the Consumer Rights Act 2015 (UK) and equivalent EU directives.</p>
+
+        <h3>12. Changes to these terms</h3>
+        <p>We may update these terms at any time. The date at the top reflects the most recent revision. Continued use of the site after any change constitutes your acceptance of the revised terms.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Contact Modal -->
+<div class="modal-overlay" id="contactModal" onclick="if(event.target===this)closeContact()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle" style="max-width:480px">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="contactModalTitle">Contact</div>
+        <div class="modal-sub">Anonymous message &mdash; no email required</div>
+      </div>
+      <button class="modal-close" onclick="closeContact()" aria-label="Close">&#x2715;</button>
+    </div>
+    <div class="form-row">
+      <label class="form-label" for="contactCategory">Category</label>
+      <select class="form-select" id="contactCategory">
+        <option value="general">General feedback</option>
+        <option value="bug">Bug report</option>
+        <option value="false-positive">False positive / misclassification</option>
+        <option value="dmca">DMCA / copyright</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label class="form-label" for="contactMessage">Message <span style="text-transform:none;letter-spacing:0">(10-1800 chars)</span></label>
+      <textarea class="contact-textarea" id="contactMessage" placeholder="Describe your issue or feedback…" oninput="updateContactCount()" maxlength="1800"></textarea>
+      <div class="contact-char-count"><span id="contactCharCount">0</span> / 1800</div>
+    </div>
+    <div class="form-row">
+      <label class="form-label" for="contactEmail">Your email <span style="text-transform:none;letter-spacing:0">(optional — only if you want a reply)</span></label>
+      <input type="email" class="wh-input" id="contactEmail" placeholder="your@email.com" autocomplete="email" style="width:100%">
+    </div>
+    <div class="contact-msg" id="contactMsg"></div>
+    <div class="modal-footer">
+      <button class="modal-submit" id="contactSubmit" onclick="submitContact()">Send Message</button>
+      <div class="modal-note">Messages are forwarded to the site owner via Discord. Nothing is stored on our servers. If you leave an email, the owner can reply directly. You can also <a href="https://github.com/FascinatingPistachio/robloxbanwave/issues" target="_blank" rel="noopener" style="color:var(--accent)">open a GitHub issue</a>.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Report Ban Modal -->
+<div class="modal-overlay" id="reportModal" onclick="maybeCloseModal(event)">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modalTitle">Report a Ban</div>
+        <div class="modal-sub">Upload your Roblox moderation screenshot to contribute to today's count</div>
+      </div>
+      <button class="modal-close" onclick="closeReportModal()" aria-label="Close">✕</button>
+    </div>
+    <div class="drop-zone" id="dropZone">
+      <input type="file" id="banFile" accept="image/*" onchange="handleFileSelect(event)">
+      <span class="drop-icon" id="dropIcon">📸</span>
+      <div class="drop-text" id="dropText">Drop your screenshot here or click to browse</div>
+      <div class="drop-sub">PNG, JPG, WEBP - max 8 MB</div>
+      <img class="drop-preview" id="dropPreview" alt="Ban screenshot preview">
+    </div>
+    <div class="ocr-status" id="ocrStatus"></div>
+    <div class="ocr-bar" id="ocrBar"><div class="ocr-bar-fill" id="ocrBarFill"></div></div>
+    <div class="form-grid">
+      <div class="form-row">
+        <label class="form-label" for="executorSelect">Executor used</label>
+        <select class="form-select" id="executorSelect">
+          <option value="">Select executor…</option>
+          <option value="synapse z">Synapse Z</option>
+          <option value="wave">Wave</option>
+          <option value="fluxus">Fluxus</option>
+          <option value="krnl">KRNL</option>
+          <option value="solara">Solara</option>
+          <option value="arceus x">Arceus X</option>
+          <option value="delta">Delta</option>
+          <option value="xeno">Xeno</option>
+          <option value="velocity">Velocity</option>
+          <option value="electron">Electron</option>
+          <option value="jjsploit">JJSploit</option>
+          <option value="hydrogen">Hydrogen</option>
+          <option value="script-ware">Script-Ware</option>
+          <option value="evon">Evon</option>
+          <option value="trigon">Trigon</option>
+          <option value="celery">Celery</option>
+          <option value="codex">Codex</option>
+          <option value="vega x">Vega X</option>
+          <option value="other">Other / Unknown</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="platformSelect">Platform</label>
+        <select class="form-select" id="platformSelect">
+          <option value="">Select platform…</option>
+          <option value="pc">PC / Windows</option>
+          <option value="mobile-android">Mobile - Android</option>
+          <option value="mobile-ios">Mobile - iOS</option>
+          <option value="console">Console</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-submit" id="modalSubmit" onclick="submitBanReport()" disabled>Submit Report</button>
+      <div class="modal-note">Anonymous. Only executor name and platform are stored. Screenshots are processed locally - they are never uploaded.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Sticky ban report nudge -->
+<div class="ban-nudge hidden" id="banNudge">
+  <button class="bn-close" onclick="dismissBanNudge()" aria-label="Dismiss">&#x2715;</button>
+  <svg class="bn-icon" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;display:block;margin-bottom:8px;color:#f0ece6"><path d="M11,2 L18,5 L18,11 C18,15.5 15,18.5 11,20 C7,18.5 4,15.5 4,11 L4,5 Z"/><line x1="11" y1="8" x2="11" y2="12"/><circle cx="11" cy="14.5" r=".8" fill="currentColor" stroke="none"/></svg>
+  <div class="bn-title">Just got banned for exploiting?</div>
+  <div class="bn-sub">Submit a screenshot to help track the wave. Anonymous, verified by OCR, takes 30 seconds.</div>
+  <button class="bn-btn" onclick="dismissBanNudge();openReportModal()">Report Your Ban &rarr;</button>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// -- Config ------------------------------------------------------------------
+const TITLE_RE     = /ban\s*wave/i;
+const SCORE_ACTIVE = 3.5;
+const SCORE_WARN   = 1.0;
+const REFRESH_MS   = 5 * 60 * 1000;
+const BAN_RE       = /\b(moderat|terminat|suspend|banned|violation|exploit|warning)\b/i;
+
+const LS_TOKEN         = 'rbx_wh_token';
+const LS_WH_ID         = 'rbx_wh_id';
+const LS_STATUS        = 'rbx_last_status';
+const LS_NOTIFIED      = 'rbx_last_notify_at';
+const LS_NUDGE_DISMISS = 'rbx_nudge_dismissed';
+
+let allPosts  = [];
+let curFilter = 'all';
+let curStatus = '';
+let ocrText   = '';
+let ocrPassed = false;
+let cdrIval   = null;
+let cdrEnd    = 0;
+
+// -- Utils -------------------------------------------------------------------
+const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+function timeAgo(utc) {
+  const s = Date.now()/1000 - utc;
+  if (s < 120)       return 'just now';
+  if (s < 3600)      return Math.floor(s/60)+'m ago';
+  if (s < 86400)     return Math.floor(s/3600)+'h ago';
+  if (s < 86400*30)  return Math.floor(s/86400)+'d ago';
+  if (s < 86400*365) return Math.floor(s/(86400*30))+'mo ago';
+  return Math.floor(s/(86400*365))+'y ago';
+}
+
+function fmtNum(n) {
+  if (n==null||n===0) return '-';
+  return n>=1000 ? (n/1000).toFixed(1)+'k' : String(n);
+}
+
+function classify(title) {
+  const t = title.toLowerCase();
+  // off-topic meta: Discord tracking servers, news commentary, detection bots
+  if (/discord\s*(server|serv\w+|bot|channel|link|notif)|tweeted?|tracked?\s*(server|bot|site)|detection\s*(server|service|bot|disc)|follow.{0,20}(ban|wave)/.test(t)) return 'meta';
+  // explicit alert signals
+  if (/\balert\b|don.?t exploit|not safe|activated|going on|is detected|going through|\d+\s*h(ours?)?\s*(of\s*)?ban|⚠|currently|right now|is live|banwave!+|wave\s*active|mass\s*ban|just\s*got\s*ban|executor\s*ban\s*wave|ban\s*wave.{0,30}(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|20\d\d)/.test(t)) return 'alert';
+  // questions / informational
+  if (/^(is |did |was |when |how |can |does |are |what |where |any )/.test(t)||/\?\s*$|banwave\?| over\??| still | end\??|explain|chances|possible|safe\s*(now|from|after)/.test(t)) return 'question';
+  return 'general';
+}
+
+function scorePost(p) {
+  const ageDays = (Date.now()/1000 - p.created_utc) / 86400;
+  if (ageDays > 14) return 0;
+  // Multi-phase decay modelling Roblox ban wave lifecycle:
+  // 0-1d: peak threat (slow decay 7%/day) — wave is actively rolling
+  // 1-3d: tapering (19%/day) — Hyperion sweeps wind down
+  // 3-7d: cooldown (28%/day) — stragglers still being caught
+  // 7-14d: residual (40%/day) — wave long over, low signal
+  let recency;
+  const r1 = 0.93, r2 = 0.81, r3 = 0.72, r4 = 0.60;
+  if      (ageDays <= 1) recency = Math.pow(r1, ageDays);
+  else if (ageDays <= 3) recency = r1 * Math.pow(r2, ageDays - 1);
+  else if (ageDays <= 7) recency = r1 * r2 * r2 * Math.pow(r3, ageDays - 3);
+  else                   recency = r1 * r2 * r2 * Math.pow(r3, 4) * Math.pow(r4, ageDays - 7);
+  const votes = Math.log2(Math.max(1, p.score||0) + 1);
+  const tw    = p._type==='alert' ? 2.5 : p._type==='question' ? 0.2 : p._type==='meta' ? 0.05 : 0.5;
+  return recency * (votes + 0.5) * tw;
+}
+
+// -- Toast -------------------------------------------------------------------
+function showToast(icon, msg, ms=4000) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `<span class="toast-icon">${icon}</span><span>${esc(msg)}</span>`;
+  document.getElementById('toastContainer').appendChild(t);
+  setTimeout(() => { t.classList.add('leaving'); setTimeout(()=>t.remove(), 260); }, ms);
+}
+
+// -- Countdown ---------------------------------------------------------------
+function startCountdown() {
+  cdrEnd = Date.now() + REFRESH_MS;
+  clearInterval(cdrIval);
+  const circ = document.getElementById('cdrProg');
+  const C    = 2 * Math.PI * 5;
+  circ.style.strokeDasharray = C;
+  cdrIval = setInterval(() => {
+    const rem  = Math.max(0, cdrEnd - Date.now());
+    const mins = Math.floor(rem/60000);
+    const secs = Math.floor((rem%60000)/1000);
+    document.getElementById('cdrText').textContent = `${mins}:${String(secs).padStart(2,'0')}`;
+    circ.style.strokeDashoffset = C * (1 - rem/REFRESH_MS);
+    if (rem<=0) clearInterval(cdrIval);
+  }, 1000);
+}
+
+// -- FAQ ---------------------------------------------------------------------
+function toggleFaq(btn) {
+  const item   = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// -- Language / translate -----------------------------------------------------
+function toggleLangMenu(e) {
+  e.stopPropagation();
+  document.getElementById('langMenu').classList.toggle('open');
+}
+document.addEventListener('click', () => document.getElementById('langMenu').classList.remove('open'));
+
+function translate(lang) {
+  window.open(`https://translate.google.com/translate?sl=en&tl=${lang}&u=${encodeURIComponent(location.href)}`, '_blank', 'noopener');
+  document.getElementById('langMenu').classList.remove('open');
+}
+
+// -- Share --------------------------------------------------------------------
+function shareStatus() {
+  if (navigator.share) {
+    navigator.share({ title:'Roblox Ban Wave Status', url: location.href }).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(location.href).then(() => showToast('🔗','Link copied!'));
+  }
+}
+
+// -- Ban nudge ---
+function showBanNudge() {
+  const dismissed = Number(localStorage.getItem(LS_NUDGE_DISMISS) || 0);
+  if (Date.now() - dismissed < 24 * 3600 * 1000) return;
+  const el = document.getElementById('banNudge');
+  if (el) el.classList.remove('hidden');
+}
+function dismissBanNudge() {
+  localStorage.setItem(LS_NUDGE_DISMISS, String(Date.now()));
+  const el = document.getElementById('banNudge');
+  if (el) el.classList.add('hidden');
+}
+
+// -- Fetch posts ---------------------------------------------------------------
+async function fetchPosts() {
+  const r = await fetch('/api/reddit');
+  if (!r.ok) {
+    const d = await r.json().catch(()=>({}));
+    throw new Error(d.error || 'Server returned '+r.status);
+  }
+  const data      = await r.json();
+  const source    = r.headers.get('X-Data-Source') || data._source || 'unknown';
+  const fetchedAt = Number(r.headers.get('X-Fetched-At') || data._fetchedAt || 0);
+  const posts     = (data.data?.children||[]).map(c=>c.data).filter(p=>TITLE_RE.test(p.title||''));
+  return { posts, source, fetchedAt };
+}
+
+// -- Hero ----------------------------------------------------------------------
+function renderHero(posts, totalScore, source, fetchedAt) {
+  const recent = posts.find(p=>p._type==='alert') || posts.find(p=>p._type!=='meta') || posts[0] || null;
+  let status, headline, subdeck, desc;
+
+  if (totalScore >= SCORE_ACTIVE) {
+    status='active'; headline='NOT SAFE';
+    subdeck='DO NOT USE EXECUTORS RIGHT NOW';
+    desc='An active ban wave is being reported on r/robloxhackers. <strong>Stop all executors immediately.</strong> Accounts are being terminated — every minute of exposure increases your risk.';
+    document.getElementById('headerBadge').textContent='⚠ ACTIVE';
+  } else if (totalScore >= SCORE_WARN) {
+    status='warning'; headline='USE CAUTION';
+    subdeck='RECENT BAN WAVE ACTIVITY DETECTED';
+    desc='Ban wave activity has been reported on r/robloxhackers. A wave may be starting or winding down — <strong>check the reports below</strong> before running any executor.';
+    document.getElementById('headerBadge').textContent='WARNING';
+  } else {
+    status='clear'; headline='ALL CLEAR';
+    subdeck='NO ACTIVE BAN WAVE DETECTED';
+    desc='No significant ban wave activity in the last two weeks. Conditions are calm — but always verify before exploiting.';
+    document.getElementById('headerBadge').textContent='CLEAR';
+  }
+
+  document.body.className = status;
+  curStatus = status;
+
+  // Wave duration metadata
+  let waveMeta = '';
+  if (status==='active' && posts.length) {
+    const qualifying = posts.filter(p=>scorePost(p)>0);
+    if (qualifying.length) {
+      const oldest = qualifying[qualifying.length-1];
+      waveMeta = `First report ${timeAgo(oldest.created_utc)} · wave ongoing`;
+    }
+  } else if (status==='warning' && posts.length) {
+    const alertPosts = posts.filter(p=>p._type==='alert');
+    if (alertPosts.length) waveMeta = `Most recent report ${timeAgo(alertPosts[0].created_utc)}`;
+  } else if (status==='clear' && posts.length) {
+    waveMeta = `Last banwave activity ${timeAgo(posts[0].created_utc)}`;
+  }
+
+  const meterPct = Math.min(100,(totalScore/(SCORE_ACTIVE*1.5))*100).toFixed(0);
+  const rpHtml = recent ? `
+    <a class="recent-post" href="${esc(recent._url)}" target="_blank" rel="noopener">
+      <div class="rp-source">r/robloxhackers · ${timeAgo(recent.created_utc)}</div>
+      <div class="rp-title">${esc(recent.title)}</div>
+      <div class="rp-meta"><span class="votes">▲ ${fmtNum(recent.score)}</span><span class="rp-arrow">View on Reddit ↗</span></div>
+    </a>` : '';
+
+  // Cache notice
+  const ageMin   = fetchedAt ? Math.round((Date.now()-fetchedAt)/60000) : null;
+  const cacheNote = source==='stale'
+    ? `⚠ Reddit is temporarily rate-limited - showing cached data${ageMin!==null?' ('+ageMin+'m old)':''}`
+    : (source==='cache' && ageMin!==null && ageMin>0)
+      ? `Data cached ${ageMin}m ago`
+      : '';
+
+  document.getElementById('heroInner').innerHTML = `
+    <div class="live-pill"><span class="live-pill-dot"></span>LIVE MONITOR · R/ROBLOXHACKERS</div>
+    <div class="status-headline">${esc(headline)}</div>
+    <div class="status-subdeck">${esc(subdeck)}</div>
+    <p class="status-desc">${desc}</p>
+    <div class="score-meter">
+      <span>THREAT LEVEL</span>
+      <div class="meter-track"><div class="meter-fill" style="width:${meterPct}%"></div></div>
+      <span>${meterPct}%</span>
+    </div>
+    ${waveMeta ? `<div class="wave-meta">${esc(waveMeta)}</div>` : ''}
+    ${rpHtml}
+    ${cacheNote ? `<div class="data-notice">${esc(cacheNote)}</div>` : ''}`;
+}
+
+// -- Feed ----------------------------------------------------------------------
+function renderFeed(verifiedCount) {
+  const container = document.getElementById('postsContainer');
+  const countEl   = document.getElementById('feedCount');
+  const recent    = allPosts.filter(p=>(Date.now()/1000-p.created_utc)<30*86400);
+  let shown = recent;
+  if (curFilter==='alert')    shown = recent.filter(p=>p._type==='alert');
+  if (curFilter==='question') shown = recent.filter(p=>p._type==='question'||p._type==='meta');
+  countEl.textContent = shown.length+' post'+(shown.length!==1?'s':'')+' (last 30 days)';
+
+  if (!shown.length) {
+    container.innerHTML = '<div class="state-box">No posts match this filter.</div>';
+    return;
+  }
+
+  container.innerHTML = shown.map((p,i) => {
+    const tagHtml = p._type==='alert'
+      ? '<span class="tag tag-alert">Alert</span>'
+      : p._type==='question' ? '<span class="tag tag-question">Question</span>'
+      : p._type==='meta' ? '<span class="tag tag-info">Info</span>' : '';
+    const vBadge = (i===0 && verifiedCount>0)
+      ? `<span class="tag tag-verified" title="Community-verified bans today">&#x1F6E1; ${verifiedCount} verified today</span>`
+      : '';
+    const pid = esc(p.id||'');
+    const voteRow = p._type==='alert' && pid
+      ? `<div class="pc-vote-row"><button class="pc-vote-btn" id="pv-up-${pid}" onclick="votePost(event,'${pid}','up')">&#128077; <span id="pvc-up-${pid}">-</span></button><button class="pc-vote-btn" id="pv-down-${pid}" onclick="votePost(event,'${pid}','down')">&#128078; <span id="pvc-down-${pid}">-</span></button><span class="pc-vote-lbl">Active ban wave?</span></div>`
+      : '';
+    return `
+      <a class="post-card" data-type="${esc(p._type)}" href="${esc(p._url)}" target="_blank" rel="noopener">
+        <div class="pc-votes"><div class="pc-votes-num">${fmtNum(p.score)}</div><div class="pc-votes-lbl">pts</div></div>
+        <div class="pc-body">
+          <div class="pc-title">${esc(p.title)}</div>
+          <div class="pc-meta">${tagHtml}${vBadge}<span>${timeAgo(p.created_utc)}</span></div>
+          ${voteRow}
+        </div>
+        <div class="pc-link-icon">&#8599;</div>
+      </a>`;
+  }).join('');
+}
+
+function setFilter(f,btn) {
+  curFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFeed(window._verifiedCount||0);
+  loadPostVotes();
+}
+
+// -- Graph ---------------------------------------------------------------------
+function renderGraph(posts) {
+  if (!posts.length) return;
+  const counts={};
+  for (const p of posts) {
+    const d=new Date(p.created_utc*1000);
+    const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    counts[k]=(counts[k]||0)+1;
+  }
+  const now=new Date(); const months=[];
+  for (let i=17;i>=0;i--) {
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    months.push({key,label:d.toLocaleDateString('en-US',{month:'short'}),year:d.getFullYear(),count:counts[key]||0});
+  }
+  const maxCount=Math.max(1,...months.map(m=>m.count));
+  const curKey=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  const total=posts.length;
+  const last30=posts.filter(p=>(Date.now()/1000-p.created_utc)<30*86400).length;
+  const peakMonth=months.reduce((a,b)=>b.count>a.count?b:a,months[0]);
+  const barsHtml=months.map(m=>{
+    const h=m.count>0?Math.max(5,(m.count/maxCount)*100):2;
+    return `<div class="g-bar${m.count>0?' has-data':''}${m.key===curKey?' cur':''}" style="height:${h}%" title="${esc(m.label+' '+m.year+': '+m.count+' post'+(m.count!==1?'s':''))}"></div>`;
+  }).join('');
+  const labelsHtml=months.map((m,i)=>`<div class="g-lbl">${(i===0||m.label==='Jan'||i===months.length-1||i%3===0)?m.label:''}</div>`).join('');
+  document.getElementById('graphCard').innerHTML=`
+    <div class="graph-head">
+      <div><div class="graph-title">Banwave mentions on r/robloxhackers</div><div class="graph-sub">Posts per month containing "banwave" or "ban wave" · last 18 months</div></div>
+      <div class="graph-stats">
+        <div class="gs-item"><strong>${total}</strong><span>total</span></div>
+        <div class="gs-item"><strong>${last30}</strong><span>last 30d</span></div>
+        <div class="gs-item"><strong>${peakMonth.count}</strong><span>peak</span></div>
+      </div>
+    </div>
+    <div class="graph-chart">${barsHtml}</div>
+    <div class="graph-labels">${labelsHtml}</div>`;
+  document.getElementById('graphSep').style.display='flex';
+  document.getElementById('graphSection').style.display='block';
+}
+
+// -- Verified bans -------------------------------------------------------------
+async function loadVerifiedCount() {
+  try {
+    const r=await fetch('/api/verify-ban');
+    if (!r.ok) return 0;
+    const d=await r.json();
+    const count=d.count||0;
+    window._verifiedCount=count;
+    document.getElementById('verifiedCount').textContent=count>0?`${count} ban${count!==1?'s':''}`:'0 bans';
+    // Executor breakdown
+    const bd=d.byExecutor||{};
+    const breakdown=document.getElementById('execBreakdown');
+    const entries=Object.entries(bd).sort((a,b)=>b[1]-a[1]);
+    breakdown.innerHTML=entries.length
+      ? entries.map(([k,v])=>`<div class="exec-chip">${esc(k)} <span>${v}</span></div>`).join('')
+      : '';
+    return count;
+  } catch { return 0; }
+}
+
+// -- Webhook UI ----------------------------------------------------------------
+function refreshWebhookUI() {
+  const token = localStorage.getItem(LS_TOKEN);
+  const id    = localStorage.getItem(LS_WH_ID);
+  document.getElementById('whForm').style.display   = token ? 'none'  : 'block';
+  document.getElementById('whActive').style.display = token ? 'block' : 'none';
+  const idRow  = document.getElementById('whIdRow');
+  const idCode = document.getElementById('whIdCode');
+  if (token && id) {
+    idRow.style.display  = 'flex';
+    idCode.textContent   = id;
+  } else {
+    idRow.style.display = 'none';
+  }
+}
+
+function showWhMsg(id, type, text) {
+  const el=document.getElementById(id);
+  el.className='wh-msg '+type; el.textContent=text;
+  setTimeout(()=>{el.className='wh-msg';},7000);
+}
+
+async function addWebhook() {
+  const input=document.getElementById('whInput');
+  const btn=document.getElementById('whAddBtn');
+  const url=input.value.trim();
+  if (!url) { showWhMsg('whFormMsg','err','Enter a webhook URL first.'); return; }
+  if (!/^https:\/\/(discord\.com|discordapp\.com|ptb\.discord\.com|canary\.discord\.com)\/api\/webhooks\/\d+\/.+/.test(url)) {
+    showWhMsg('whFormMsg','err','Must be a Discord webhook URL (https://discord.com/api/webhooks/…)');
+    return;
+  }
+  btn.disabled=true; btn.textContent='Saving…';
+  try {
+    const res=await fetch('/api/webhooks',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({webhookUrl:url})});
+    const data=await res.json();
+    if (!res.ok) { showWhMsg('whFormMsg','err',data.error||'Server error'); return; }
+    localStorage.setItem(LS_TOKEN, data.token);
+    if (data.webhookId) localStorage.setItem(LS_WH_ID, data.webhookId);
+    input.value='';
+    refreshWebhookUI();
+    showWhMsg('whActiveMsg','ok','Webhook saved! Notifications enabled.');
+  } catch(e) { showWhMsg('whFormMsg','err','Network error: '+e.message);
+  } finally { btn.disabled=false; btn.textContent='Add Webhook'; }
+}
+
+async function removeWebhook() {
+  const token=localStorage.getItem(LS_TOKEN);
+  if (!token) { refreshWebhookUI(); return; }
+  if (!confirm('Remove your Discord webhook? You will stop receiving notifications.')) return;
+  try {
+    const res=await fetch('/api/webhooks?token='+encodeURIComponent(token),{method:'DELETE'});
+    if (res.ok||res.status===404) {
+      localStorage.removeItem(LS_TOKEN); localStorage.removeItem(LS_WH_ID); localStorage.removeItem(LS_NOTIFIED);
+      refreshWebhookUI(); showWhMsg('whFormMsg','ok','Webhook removed.');
+    } else {
+      const d=await res.json().catch(()=>({})); showWhMsg('whActiveMsg','err',d.error||'Removal failed.');
+    }
+  } catch(e) { showWhMsg('whActiveMsg','err','Network error: '+e.message); }
+}
+
+function toggleUpdateForm() {
+  const f=document.getElementById('whUpdateForm');
+  f.classList.toggle('open');
+  if (f.classList.contains('open')) document.getElementById('whUpdateInput').focus();
+}
+
+async function submitUpdateWebhook() {
+  const token=localStorage.getItem(LS_TOKEN);
+  const url=document.getElementById('whUpdateInput').value.trim();
+  const btn=document.getElementById('whUpdateBtn');
+  if (!token||!url) return;
+  if (!/^https:\/\/(discord\.com|discordapp\.com|ptb\.discord\.com|canary\.discord\.com)\/api\/webhooks\/\d+\/.+/.test(url)) {
+    showWhMsg('whUpdateMsg','err','Invalid Discord webhook URL.'); return;
+  }
+  btn.disabled=true; btn.textContent='Saving…';
+  try {
+    const res=await fetch('/api/webhooks',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({token,webhookUrl:url})});
+    const data=await res.json();
+    if (!res.ok) { showWhMsg('whUpdateMsg','err',data.error||'Update failed'); return; }
+    if (data.webhookId) localStorage.setItem(LS_WH_ID, data.webhookId);
+    document.getElementById('whUpdateInput').value='';
+    document.getElementById('whUpdateForm').classList.remove('open');
+    refreshWebhookUI();
+    showToast('✅','Webhook URL updated.');
+  } catch(e) { showWhMsg('whUpdateMsg','err','Network error: '+e.message);
+  } finally { btn.disabled=false; btn.textContent='Save'; }
+}
+
+function copyWebhookId() {
+  const id=localStorage.getItem(LS_WH_ID)||'';
+  if (!id) return;
+  navigator.clipboard.writeText(id).then(()=>showToast('📋','Webhook ID copied!'));
+}
+
+async function testWebhook() {
+  const token=localStorage.getItem(LS_TOKEN);
+  if (!token) return;
+  const btn=document.getElementById('testWHBtn');
+  btn.disabled=true; btn.textContent='Sending…';
+  try {
+    const res=await fetch('/api/notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({test:true,token})});
+    const data=await res.json();
+    if (res.ok&&data.ok) showToast('✅','Test notification sent!');
+    else showToast('❌',data.error||'Test failed - check your webhook.');
+  } catch(e) { showToast('❌','Network error: '+e.message);
+  } finally { btn.disabled=false; btn.textContent='Send Test'; }
+}
+
+// -- Notifications --------------------------------------------------------------
+async function maybeTriggerNotify(status, topPost) {
+  if (status!=='active') return;
+  const last=Number(localStorage.getItem(LS_NOTIFIED)||0);
+  if (Date.now()-last<30*60*1000) return;
+  if (localStorage.getItem(LS_STATUS)==='active') return;
+  try {
+    await fetch('/api/notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({topPost:topPost?{title:topPost.title,url:topPost._url}:null})});
+    localStorage.setItem(LS_NOTIFIED,String(Date.now()));
+  } catch {}
+}
+
+// -- URL routing ---------------------------------------------------------------
+function pushUrl(path) {
+  if (location.pathname !== path) history.pushState({ path }, '', path);
+}
+function popUrl() {
+  if (location.pathname !== '/') history.pushState({ path: '/' }, '', '/');
+}
+window.addEventListener('popstate', e => {
+  const path = e.state?.path || location.pathname;
+  closeAllModals();
+  if (path === '/privacy')  { openLegal('privacy', true); }
+  else if (path === '/terms')   { openLegal('terms', true); }
+  else if (path === '/report')  { openReportModal(true); }
+  else if (path === '/contact') { openContact(true); }
+});
+function closeAllModals() {
+  document.getElementById('legalModal').classList.remove('open');
+  document.getElementById('reportModal').classList.remove('open');
+  document.getElementById('contactModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// -- Legal modal ---------------------------------------------------------------
+function openLegal(tab, noHistory) {
+  showLegalTab(tab || 'privacy');
+  document.getElementById('legalModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (!noHistory) pushUrl('/' + (tab || 'privacy'));
+}
+function closeLegal() {
+  document.getElementById('legalModal').classList.remove('open');
+  document.body.style.overflow = '';
+  popUrl();
+}
+function showLegalTab(tab) {
+  document.querySelectorAll('.legal-tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+  document.querySelectorAll('.legal-section').forEach(s=>s.style.display=s.dataset.tab===tab?'block':'none');
+  document.querySelector('.legal-body').scrollTop=0;
+}
+
+// -- Report modal --------------------------------------------------------------
+function openReportModal(noHistory) {
+  document.getElementById('reportModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (!noHistory) pushUrl('/report');
+}
+function closeReportModal() {
+  document.getElementById('reportModal').classList.remove('open');
+  document.body.style.overflow = '';
+  popUrl();
+}
+function maybeCloseModal(e) { if (e.target === document.getElementById('reportModal')) closeReportModal(); }
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeReportModal(); closeLegal(); closeContact(); }
+});
+
+// -- Contact modal --------------------------------------------------------------
+function openContact(noHistory) {
+  document.getElementById('contactModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (!noHistory) pushUrl('/contact');
+}
+function closeContact() {
+  document.getElementById('contactModal').classList.remove('open');
+  document.body.style.overflow = '';
+  popUrl();
+}
+function updateContactCount() {
+  const len = document.getElementById('contactMessage').value.length;
+  document.getElementById('contactCharCount').textContent = len;
+}
+function showContactMsg(type, text) {
+  const el = document.getElementById('contactMsg');
+  el.className = 'contact-msg ' + type;
+  el.textContent = text;
+  if (type === 'ok') setTimeout(() => { el.className = 'contact-msg'; }, 6000);
+}
+async function submitContact() {
+  const msg      = document.getElementById('contactMessage').value.trim();
+  const category = document.getElementById('contactCategory').value;
+  const email    = document.getElementById('contactEmail').value.trim();
+  const btn      = document.getElementById('contactSubmit');
+  if (msg.length < 10) { showContactMsg('err', 'Message too short (min 10 characters).'); return; }
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showContactMsg('err', 'Invalid email address.'); return; }
+  btn.disabled = true; btn.textContent = 'Sending…';
+  try {
+    const body = { message: msg, category };
+    if (email) body.email = email;
+    const res  = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const data = await res.json();
+    if (res.ok && data.ok) {
+      document.getElementById('contactMessage').value = '';
+      document.getElementById('contactEmail').value = '';
+      updateContactCount();
+      showContactMsg('ok', email ? 'Message sent! The site owner will reply to your email.' : 'Message sent! The site owner will review it.');
+    } else {
+      showContactMsg('err', data.error || 'Failed to send message.');
+    }
+  } catch (e) {
+    showContactMsg('err', 'Network error: ' + e.message);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Send Message';
+  }
+}
+
+// -- OCR -----------------------------------------------------------------------
+function loadTesseract() {
+  return new Promise((resolve,reject)=>{
+    if (window.Tesseract) { resolve(window.Tesseract); return; }
+    const s=document.createElement('script');
+    s.src='https://unpkg.com/tesseract.js@5/dist/tesseract.min.js';
+    s.onload=()=>resolve(window.Tesseract);
+    s.onerror=()=>reject(new Error('Failed to load OCR library.'));
+    document.head.appendChild(s);
+  });
+}
+
+function setOcrStatus(type,msg) {
+  const el=document.getElementById('ocrStatus');
+  el.className='ocr-status'+(type?' '+type:''); el.textContent=msg;
+}
+function setOcrProgress(pct) {
+  document.getElementById('ocrBar').classList.add('show');
+  document.getElementById('ocrBarFill').style.width=pct+'%';
+}
+
+async function handleFileSelect(e) {
+  const file=e.target.files[0];
+  if (!file) return;
+  if (file.size>8*1024*1024) { setOcrStatus('fail','File too large (max 8 MB).'); return; }
+  const preview=document.getElementById('dropPreview');
+  const reader=new FileReader();
+  reader.onload=ev=>{preview.src=ev.target.result;preview.style.display='block';
+    document.getElementById('dropIcon').style.display='none';
+    document.getElementById('dropText').style.display='none';};
+  reader.readAsDataURL(file);
+  ocrText=''; ocrPassed=false;
+  document.getElementById('modalSubmit').disabled=true;
+  setOcrStatus('scanning','Analysing screenshot with OCR…');
+  setOcrProgress(0);
+  try {
+    const Tesseract=await loadTesseract();
+    const {data:{text}}=await Tesseract.recognize(file,'eng',{
+      logger:m=>{if(m.status==='recognizing text')setOcrProgress(Math.round(m.progress*100));}
+    });
+    ocrText=text;
+    document.getElementById('ocrBar').classList.remove('show');
+    if (BAN_RE.test(text)) {
+      ocrPassed=true; setOcrStatus('pass','✓ Ban message detected in screenshot.');
+    } else {
+      setOcrStatus('fail','✗ No Roblox ban message found. Please upload your moderation notice screenshot.');
+    }
+  } catch(err) {
+    document.getElementById('ocrBar').classList.remove('show');
+    // Allow fallback if OCR fails to load
+    ocrPassed=true; ocrText='[ocr-unavailable]';
+    setOcrStatus('pass','OCR unavailable - submitting without verification.');
+  }
+  checkModalReady();
+}
+
+function checkModalReady() {
+  const ex=document.getElementById('executorSelect').value;
+  const pl=document.getElementById('platformSelect').value;
+  document.getElementById('modalSubmit').disabled=!(ocrPassed&&ex&&pl);
+}
+document.getElementById('executorSelect').addEventListener('change',checkModalReady);
+document.getElementById('platformSelect').addEventListener('change',checkModalReady);
+
+const dz=document.getElementById('dropZone');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
+dz.addEventListener('drop',e=>{
+  e.preventDefault(); dz.classList.remove('drag');
+  const file=e.dataTransfer?.files[0];
+  if (file&&file.type.startsWith('image/')) {
+    try { const dt=new DataTransfer(); dt.items.add(file); document.getElementById('banFile').files=dt.files; handleFileSelect({target:{files:dt.files}}); } catch {}
+  }
+});
+
+async function submitBanReport() {
+  const executor=document.getElementById('executorSelect').value;
+  const platform=document.getElementById('platformSelect').value;
+  if (!ocrPassed||!executor||!platform) return;
+  const btn=document.getElementById('modalSubmit');
+  btn.disabled=true; btn.textContent='Submitting…';
+  try {
+    const res=await fetch('/api/verify-ban',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ocrText:ocrText.slice(0,2000),executor,platform})});
+    const data=await res.json();
+    if (res.ok) {
+      closeReportModal();
+      window._verifiedCount=data.count;
+      document.getElementById('verifiedCount').textContent=`${data.count} ban${data.count!==1?'s':''}`;
+      renderFeed(data.count);
+      // Update executor breakdown
+      loadVerifiedCount();
+      showToast('🛡',`Ban reported! Today: ${data.count}`);
+      // Reset modal state
+      ocrText=''; ocrPassed=false;
+      document.getElementById('banFile').value='';
+      document.getElementById('dropPreview').style.display='none';
+      document.getElementById('dropIcon').style.display='';
+      document.getElementById('dropText').style.display='';
+      document.getElementById('executorSelect').value='';
+      document.getElementById('platformSelect').value='';
+      setOcrStatus('','');
+    } else {
+      showToast('❌',data.error||'Submission failed.');
+    }
+  } catch(e) { showToast('❌','Network error: '+e.message);
+  } finally { btn.disabled=false; btn.textContent='Submit Report'; }
+}
+
+// -- Per-post votes ------------------------------------------------------------
+const LS_VOTED_POSTS = 'rbx_voted_posts';
+
+function getVotedPosts() {
+  try { return JSON.parse(localStorage.getItem(LS_VOTED_POSTS) || '{}'); } catch { return {}; }
+}
+
+async function loadPostVotes() {
+  const alertPosts = allPosts.filter(p => p._type === 'alert' && p.id);
+  if (!alertPosts.length) return;
+  const voted = getVotedPosts();
+  for (const p of alertPosts) {
+    const v = voted[p.id];
+    if (!v) continue;
+    const up   = document.getElementById(`pv-up-${p.id}`);
+    const down = document.getElementById(`pv-down-${p.id}`);
+    if (up)   { up.disabled   = true; up.classList.toggle('voted-up',   v === 'up'); }
+    if (down) { down.disabled = true; down.classList.toggle('voted-down', v === 'down'); }
+  }
+  try {
+    const ids  = alertPosts.map(p => p.id).join(',');
+    const r    = await fetch(`/api/vote?posts=${encodeURIComponent(ids)}`);
+    if (!r.ok) return;
+    const { votes } = await r.json();
+    for (const [id, counts] of Object.entries(votes || {})) {
+      const uel = document.getElementById(`pvc-up-${id}`);
+      const del = document.getElementById(`pvc-down-${id}`);
+      if (uel) uel.textContent = counts.up   ?? 0;
+      if (del) del.textContent = counts.down ?? 0;
+    }
+  } catch {}
+}
+
+async function votePost(e, postId, type) {
+  e.preventDefault();
+  e.stopPropagation();
+  const voted = getVotedPosts();
+  if (voted[postId]) { showToast('&#x2139;&#xFE0F;', 'Already voted on this post.'); return; }
+  const upBtn   = document.getElementById(`pv-up-${postId}`);
+  const downBtn = document.getElementById(`pv-down-${postId}`);
+  if (upBtn)   upBtn.disabled   = true;
+  if (downBtn) downBtn.disabled = true;
+  try {
+    const res  = await fetch('/api/vote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ postId, type }) });
+    const data = await res.json();
+    if (res.ok || res.status === 201) {
+      voted[postId] = type;
+      localStorage.setItem(LS_VOTED_POSTS, JSON.stringify(voted));
+      if (upBtn)   { upBtn.classList.toggle('voted-up',     type === 'up');   const c = document.getElementById(`pvc-up-${postId}`);   if (c) c.textContent = data.up   ?? 0; }
+      if (downBtn) { downBtn.classList.toggle('voted-down', type === 'down'); const c = document.getElementById(`pvc-down-${postId}`); if (c) c.textContent = data.down ?? 0; }
+      showToast(type === 'up' ? '&#128077;' : '&#128078;', type === 'up' ? 'Upvoted - active wave.' : 'Downvoted - false alarm?');
+    } else if (res.status === 429) {
+      voted[postId] = type;
+      localStorage.setItem(LS_VOTED_POSTS, JSON.stringify(voted));
+      showToast('&#x2139;&#xFE0F;', data.error || 'Already voted.');
+    } else {
+      if (upBtn)   upBtn.disabled   = false;
+      if (downBtn) downBtn.disabled = false;
+      showToast('&#x274C;', data.error || 'Vote failed.');
+    }
+  } catch (err) {
+    if (upBtn)   upBtn.disabled   = false;
+    if (downBtn) downBtn.disabled = false;
+    showToast('&#x274C;', 'Network error: ' + err.message);
+  }
+}
+
+// -- Main load ------------------------------------------------------------------
+async function load() {
+  const btn=document.getElementById('refreshBtn');
+  btn.disabled=true;
+  document.body.className='loading';
+  document.getElementById('headerBadge').textContent='Checking…';
+  document.getElementById('heroInner').innerHTML=
+    '<div class="state-box"><div class="spinner"></div><br>Checking r/robloxhackers…</div>';
+  document.getElementById('feedSep').style.display='none';
+  document.getElementById('feedSection').style.display='none';
+  document.getElementById('graphSep').style.display='none';
+  document.getElementById('graphSection').style.display='none';
+
+  try {
+    const [{posts,source,fetchedAt}, verifiedCount] = await Promise.all([fetchPosts(), loadVerifiedCount()]);
+
+    allPosts = posts.map(p=>({
+      ...p,
+      _type: classify(p.title||''),
+      _url:  (()=>{ const rp=(p.permalink||'').replace(/['"<>]/g,''); return rp.startsWith('http')?rp:'https://reddit.com'+rp; })(),
+    })).sort((a,b)=>{
+      const ar=a._type==='alert'?0:a._type==='meta'?2:1;
+      const br=b._type==='alert'?0:b._type==='meta'?2:1;
+      if(ar!==br)return ar-br;
+      return b.created_utc-a.created_utc;
+    });
+
+    const totalScore=allPosts.reduce((s,p)=>s+scorePost(p),0);
+    renderHero(allPosts,totalScore,source,fetchedAt);
+
+    if (allPosts.length) {
+      document.getElementById('feedSep').style.display='flex';
+      document.getElementById('feedSection').style.display='block';
+      renderFeed(verifiedCount);
+      renderGraph(allPosts);
+      loadPostVotes();
+    }
+
+    document.getElementById('lastCheck').textContent='Checked '+new Date().toLocaleTimeString();
+    startCountdown();
+    await maybeTriggerNotify(curStatus,allPosts[0]||null);
+    localStorage.setItem(LS_STATUS,curStatus);
+
+  } catch(err) {
+    document.body.className='';
+    document.getElementById('headerBadge').textContent='Error';
+    document.getElementById('heroInner').innerHTML=`
+      <div class="state-box">
+        <div style="font-size:22px;margin-bottom:10px">📡</div>
+        Could not load data<br>
+        <span style="color:var(--text3);font-size:11px">${esc(err.message)}</span><br><br>
+        <button class="refresh-btn" onclick="load()" style="margin:auto">Try again</button>
+      </div>`;
+  }
+  btn.disabled=false;
+}
+
+function parseTwemoji() {
+  if (window.twemoji) twemoji.parse(document.body, { folder: 'svg', ext: '.svg', base: 'https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/' });
+}
+
+setInterval(load, REFRESH_MS);
+refreshWebhookUI();
+load().then(parseTwemoji);
+setTimeout(showBanNudge, 4000);
+
+// Handle direct URL navigation (/privacy, /terms, /report, /contact)
+(function() {
+  const p = location.pathname;
+  if (p === '/privacy')  openLegal('privacy', true);
+  else if (p === '/terms')   openLegal('terms', true);
+  else if (p === '/report')  openReportModal(true);
+  else if (p === '/contact') openContact(true);
+  history.replaceState({ path: p }, '', p);
+})();
+</script>
+</body>
+</html>
